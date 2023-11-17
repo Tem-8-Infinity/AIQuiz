@@ -3,11 +3,12 @@ import{ useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase-config';
 import { getDatabase, ref, set } from 'firebase/database';
+import { createUser } from '../services/user.sevices';
 
 const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [number, setNumber] = useState('');
+  const [phoneNumber, setNumber] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e) => {
@@ -16,14 +17,8 @@ const SignUp = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       const db = getDatabase();
-      
-      await set(ref(db, 'users/' + user.uid), {
-        username,
-        email: user.email,
-        number,
-        password: user.password
-      });
-      
+      console.log(user);
+      await createUser(username, email, phoneNumber, user.uid)
     } catch (error) {
       console.error("Registration error:", error.message);
     }
@@ -56,8 +51,8 @@ const SignUp = () => {
               <label className="label">
                 <span className="label-text">Phone Number</span>
               </label>
-              <input type="number" placeholder="number" className="input input-bordered" 
-                value={number} onChange={(e) => setNumber(e.target.value)} required />
+              <input type="text" placeholder="number" className="input input-bordered" 
+                value={phoneNumber} onChange={(e) => setNumber(e.target.value)} required />
             </div>
             <div className="form-control">
               <label className="label">
