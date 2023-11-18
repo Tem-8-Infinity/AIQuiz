@@ -5,7 +5,7 @@ const NavBar = () => {
   return (
     <div className="navbar bg-gray-700">
   <div className="flex-1">
-    <a className="btn btn-ghost text-xl text-white">Team 8 Infinity</a>
+    <a href='/' className="btn btn-ghost text-xl text-white">Team 8 Infinity</a>
   </div>
   <div className="flex-none gap-2">
     <div className="dropdown dropdown-end">
