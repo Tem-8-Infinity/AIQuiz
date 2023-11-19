@@ -4,21 +4,22 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase-config';
 import { getDatabase, ref, set } from 'firebase/database';
 import { createUser } from '../services/user.sevices';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setNumber] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      const db = getDatabase();
-      console.log(user);
       await createUser(username, email, phoneNumber, user.uid)
+      navigate("/");
     } catch (error) {
       console.error("Registration error:", error.message);
     }
