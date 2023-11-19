@@ -35,14 +35,14 @@ export const getUserByHandle = async (handle) => {
   }
 };
 
-export const createUser = async (username, email, phoneNumber, uid, role) => {
+export const createUser = async (username, email, phoneNumber, uid, role=1) => {
   const userObj = {
     username,
     email: email,
     phoneNumber,
     createdOn: Date.now(),
     uid,
-    role
+    role 
   }
   await set(ref(db, 'users/' + uid), userObj)
 };

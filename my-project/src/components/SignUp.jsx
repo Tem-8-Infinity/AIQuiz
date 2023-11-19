@@ -1,5 +1,9 @@
+import { auth, db } from "../config/firebase-config.js";
 import { useFormik } from "formik";
 import { basicSchema } from '../schemas/index.js';
+import { createUserWithEmailAndPassword} from "firebase/auth";
+import { createUser } from "../services/user.sevices.js";
+
 
 const SignUp = () => {
 
@@ -10,9 +14,18 @@ const SignUp = () => {
       phoneNumber: '',
       password: '',
       confirmPassword: '',
-      //role: '',
     },
     validationSchema: basicSchema,
+    onSubmit: async (values) => {
+        try {
+          const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+          const user = userCredential.user;
+          console.log(user);
+          await createUser(values.username, values.email, values.phoneNumber, user.uid)
+        } catch (error) {
+          console.error("Registration error:", error.message);
+        }
+    }
   })
 
   // const [username, setUsername] = useState('');
@@ -87,7 +100,7 @@ const SignUp = () => {
               )}
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary">Register</button>
+              <button type="submit" className="btn btn-primary">Register</button>
             </div>
           </form>
         </div>
