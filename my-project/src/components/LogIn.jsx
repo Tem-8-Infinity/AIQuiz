@@ -1,22 +1,26 @@
-import React, { useState, useContext } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../config/firebase-config';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../config/firebase-config";
+import { useNavigate } from "react-router-dom";
+import { useStore } from "zustand";
+import useUserStore from "../context/store";
 
 const LogIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
+  const { user } = useStore(useUserStore);
+  console.log(user, "tata");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoginError('');
+    setLoginError("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/'); 
+      navigate("/");
     } catch (error) {
-      setLoginError("Failed to login. Please check your credentials."); 
+      setLoginError("Failed to login. Please check your credentials.");
     }
   };
 
@@ -33,15 +37,27 @@ const LogIn = () => {
               <label className="label">
                 <span className="label-text">Email</span>
               </label>
-              <input type="email" placeholder="email" className="input input-bordered" 
-                value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <input
+                type="email"
+                placeholder="email"
+                className="input input-bordered"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input type="password" placeholder="password" className="input input-bordered" 
-                value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <input
+                type="password"
+                placeholder="password"
+                className="input input-bordered"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </div>
             {loginError && <p className="text-red-500">{loginError}</p>}
             <div className="form-control mt-6">

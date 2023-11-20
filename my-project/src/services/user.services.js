@@ -7,7 +7,8 @@ import {
   remove,
   set,
   update,
-  onValue
+  onValue,
+  child
 } from "firebase/database";
 import { db } from "../config/firebase-config";
 
@@ -35,14 +36,44 @@ export const getUserByHandle = async (handle) => {
   }
 };
 
-export const createUser = async (username, email, phoneNumber, uid, role=1) => {
+export const createUser = async (username, email, phoneNumber, uid, role) => {
   const userObj = {
     username,
     email: email,
     phoneNumber,
     createdOn: Date.now(),
     uid,
-    role 
+    role
   }
   await set(ref(db, 'users/' + uid), userObj)
 };
+
+export const getUserData = async (uid) => {
+  const dbRef = ref(db);
+  try {
+    const snapshot = await get(child(dbRef, `users/${uid}`));
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      console.log("No user data available");
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    throw error;
+  }
+};
+
+const UserProfile = () => {
+  const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
+
+  // Example of updating user data
+  const updateUser = (newUserData) => {
+    setUser(newUserData);
+  };
+
+  // Render user data or related components
+};
+
+export default UserProfile;

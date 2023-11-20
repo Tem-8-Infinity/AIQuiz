@@ -9,4 +9,5 @@ export const basicSchema = yup.object().shape({
     phoneNumber: yup.string().required("Phone Number is required").matches(/^\d{10}$/, 'Phone number must have exactly 10 digits'),
     password: yup.string().required("Password is required").matches(passwordRules,'Password must be 6-20 characters with at least 1 uppercase, 1 number, and 1 symbol. '),
     confirmPassword: yup.string().oneOf([yup.ref("password"), null], "Passwords must match"),
+    role: yup.string().oneOf(['participant', 'creator'], 'Invalid role').required("Role is required"),
 })

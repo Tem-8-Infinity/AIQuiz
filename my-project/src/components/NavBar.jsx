@@ -15,12 +15,6 @@ const NavBar = () => {
     </button>
       </label>
       <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-        <li>
-          <a className="justify-between">
-            Profile
-            <span className="badge">New</span>
-          </a>
-        </li>
         <li><Link to="/LogIn">Log In</Link></li>
         <li><Link to="/SignUp">Sign Up</Link></li>
       </ul>
