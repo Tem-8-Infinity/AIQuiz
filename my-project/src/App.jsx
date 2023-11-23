@@ -1,39 +1,66 @@
-import './App.css'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './components/Home';
-import LogIn from './components/LogIn';
-import NavBar from './components/NavBar';
-import SignUp from './components/SignUp';
-import { useEffect } from 'react';
-import ProfilePage from './components/ProfilePage/ProfilePage'
-import useUserStore from './context/store';
+import React, { useEffect } from "react";
+import "./App.css";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Home from "./components/Home";
+import LogIn from "./components/LogIn";
+import SignUp from "./components/SignUp";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
+import AuthenticatedRoute from "./hoc/AuthenticatedRoute";
+import useUserStore from "./context/store";
+import NavBar from "./components/NavBar";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getUserData } from "./services/user.services";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  const fetchUserData = useUserStore((state) => state.fetchUserData);
+  const { user, setUser } = useUserStore();
+  const auth = getAuth();
 
   useEffect(() => {
-    const uid = "uid"; // Replace with actual UID, possibly from authentication state
-    fetchUserData(uid);
-  }, [fetchUserData]);
-  // const setUser = useUserStore((state) => state.setUser);
-  // useEffect(() => {
-  //   // Check if user data is stored in localStorage
-  //   const storedUserData = JSON.parse(localStorage.getItem('userData'));
+    // Listen for changes in the authentication state
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        // User is signed in, update the Zustand store
+        const { uid } = firebaseUser;
+        getUserData(uid).then((userData) => {
+          setUser(userData);
+        });
+      }
+    });
 
-  //   if (storedUserData) {
-  //     setUser(storedUserData);
-  //   }
-  // }, [setUser]);
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="App">
-      <NavBar/>
+      <NavBar />
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path='/Profile' element={<ProfilePage/>} />
+        <Route path="/" element={user ? <Navigate to="/" /> : <Home />} />
         <Route path="/LogIn" element={<LogIn />} />
         <Route path="/SignUp" element={<SignUp />} />
+        <Route
+          path="/Profile"
+          element={
+            <AuthenticatedRoute>
+              <ProfilePage />
+            </AuthenticatedRoute>
+          }
+        />
       </Routes>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }

@@ -1,27 +1,48 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import useUserStore from "../context/store";
+import { logoutUser } from "../services/auth.services";
+import defaultAvatar from "./../assets/defaultAvatar.svg";
 
 const NavBar = () => {
+  const { user, setUser} = useUserStore();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    try {
+      logoutUser();
+      setUser(null);
+      navigate('/'); // Navigate to home page
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   return (
     <div className="navbar bg-gray-700">
-  <div className="flex-1">
-    <a href='/' className="btn btn-ghost text-xl text-white">Team 8 Infinity</a>
-  </div>
-  <div className="flex-none gap-2">
-    <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-        <button className="btn btn-square btn-ghost text-white items-center " >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-7 h-7 m-auto stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-    </button>
-      </label>
-      <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-        <li><Link to="/LogIn">Log In</Link></li>
-        <li><Link to="/SignUp">Sign Up</Link></li>
-      </ul>
+      <div className="flex-1">
+        <Link to="/" className="btn btn-ghost text-xl text-white">Team 8 Infinity</Link>
+      </div>
+      <div className="flex-none gap-2">
+        {user ? (
+          <>
+            {/* Display user's avatar if available */}
+            
+              <img src={user.avatarURL || defaultAvatar} alt="Avatar" className="w-10 h-10 rounded-full mr-2.5" />
+            
+            
+
+            <Link to="/Profile" className="btn btn-ghost text-white">My Profile</Link>
+            <Link to="/" onClick={handleLogout} className="btn btn-ghost text-white">Log Out</Link>
+          </>
+        ) : (
+          <>
+            <Link to="/LogIn" className="btn btn-ghost text-white">Log In</Link>
+            <Link to="/SignUp" className="btn btn-ghost text-white">Sign Up</Link>
+          </>
+        )}
+      </div>
     </div>
-  </div>
-</div>
-  )
+  );
 }
 
 export default NavBar;

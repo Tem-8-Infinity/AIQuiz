@@ -1,68 +1,44 @@
-import { auth, db } from "../config/firebase-config.js";
 import { useFormik } from "formik";
-import { basicSchema } from "../schemas/index.js";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { createUser } from "../services/user.services.js";
-import { useStore } from "zustand";
-import useUserStore from "../context/store.js";
+import { basicSchema } from "../schemas/index";
+import { createUser } from "../services/user.services";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../services/auth.services";
 
 const SignUp = () => {
-  const { user, setUser } = useStore(useUserStore);
-  console.log(user);
-  const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
-    useFormik({
-      initialValues: {
-        username: "",
-        email: "",
-        phoneNumber: "",
-        password: "",
-        confirmPassword: "",
-        role: "",
-      },
-      validationSchema: basicSchema,
-      onSubmit: async (values, { setTouched }) => {
-        setTouched({ ...touched, role: true });
-        try {
-          const userCredential = await createUserWithEmailAndPassword(
-            auth,
-            values.email,
-            values.password
-          );
-          const user = userCredential.user;
-          console.log(user);
-          await createUser(
-            values.username,
-            values.email,
-            values.phoneNumber,
-            user.uid,
-            values.role
-          );
-          // Update the user in Zustand store
-          useUserStore.setState({ user: values.username });
-        } catch (error) {
-          console.error("Registration error:", error.message);
-        }
-      },
-    });
-  console.log(user, "asd");
-  // const [username, setUsername] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [phoneNumber, setNumber] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [confirmPassword, setConfirmPassword] = useState('');
+  // const setUser = useUserStore((state) => state.setUser);
+  const navigate = useNavigate();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  //     const user = userCredential.user;
-  //     const db = getDatabase();
-  //     console.log(user);
-  //     await createUser(username, email, phoneNumber, user.uid)
-  //   } catch (error) {
-  //     console.error("Registration error:", error.message);
-  //   }
-  // };
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      userName: "",
+      email: "",
+      phoneNumber: "",
+      password: "",
+      confirmPassword: "",
+      role: "",
+    },
+    validationSchema: basicSchema,
+    onSubmit: async (values) => {
+      try {
+        const credentials = await registerUser(values.email, values.password);
+
+        await createUser(
+          values.firstName,
+          values.lastName,
+          values.userName,
+          values.email,
+          values.phoneNumber,
+          credentials.user.uid,
+          values.role
+        );
+        navigate("/");
+      } catch (error) {
+        console.error("Registration error:", error.message);
+      }
+    },
+  });
 
   return (
     <div className="hero min-h-screen bg-base-200">
@@ -72,98 +48,144 @@ const SignUp = () => {
           <p className="py-6">Provide your details to create a new account.</p>
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <form className="card-body" onSubmit={handleSubmit}>
+          <form className="card-body" onSubmit={formik.handleSubmit}>
+            {/* First Name Field */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">First Name</span>
+              </label>
+              <input
+                type="text"
+                name="firstName"
+                placeholder="Type Your First Name"
+                className="input input-bordered"
+                value={formik.values.firstName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.firstName && formik.errors.firstName && (
+                <p className="text-red-500">{formik.errors.firstName}</p>
+              )}
+            </div>
+
+            {/* Last Name Field */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Last Name</span>
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Type Your Last Name"
+                className="input input-bordered"
+                value={formik.values.lastName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.lastName && formik.errors.lastName && (
+                <p className="text-red-500">{formik.errors.lastName}</p>
+              )}
+            </div>
+
+            {/* Username Field */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Username</span>
               </label>
               <input
                 type="text"
+                name="userName"
                 placeholder="Type Your Username"
                 className="input input-bordered"
-                value={values.username}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                id="username"
-                required
+                value={formik.values.userName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
-              {touched.username && errors.username && (
-                <p className="text-red-500">{errors.username}</p>
+              {formik.touched.userName && formik.errors.userName && (
+                <p className="text-red-500">{formik.errors.userName}</p>
               )}
             </div>
 
+            {/* Email Field */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
               </label>
               <input
                 type="email"
+                name="email"
                 placeholder="Type Your Email"
                 className="input input-bordered"
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                id="email"
-                required
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
-              {touched.email && errors.email && (
-                <p className="text-red-500">{errors.email}</p>
+              {formik.touched.email && formik.errors.email && (
+                <p className="text-red-500">{formik.errors.email}</p>
               )}
             </div>
+
+            {/* Phone Number Field */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Phone Number</span>
               </label>
               <input
                 type="text"
+                name="phoneNumber"
                 placeholder="Type Your Phone Number"
                 className="input input-bordered"
-                value={values.phoneNumber}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                id="phoneNumber"
-                required
+                value={formik.values.phoneNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
-              {touched.phoneNumber && errors.phoneNumber && (
-                <p className="text-red-500">{errors.phoneNumber}</p>
+              {formik.touched.phoneNumber && formik.errors.phoneNumber && (
+                <p className="text-red-500">{formik.errors.phoneNumber}</p>
               )}
             </div>
+
+            {/* Password Field */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
               <input
                 type="password"
+                name="password"
                 placeholder="Type Your Password"
                 className="input input-bordered"
-                value={values.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                id="password"
-                required
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
-              {touched.password && errors.password && (
-                <p className="text-red-500">{errors.password}</p>
+              {formik.touched.password && formik.errors.password && (
+                <p className="text-red-500">{formik.errors.password}</p>
               )}
             </div>
+
+            {/* Confirm Password Field */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Confirm Password</span>
               </label>
               <input
                 type="password"
+                name="confirmPassword"
                 placeholder="Confirm Your Password"
                 className="input input-bordered"
-                value={values.confirmPassword}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                id="confirmPassword"
-                required
+                value={formik.values.confirmPassword}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
-              {touched.confirmPassword && errors.confirmPassword && (
-                <p className="text-red-500">{errors.confirmPassword}</p>
-              )}
+              {formik.touched.confirmPassword &&
+                formik.errors.confirmPassword && (
+                  <p className="text-red-500">
+                    {formik.errors.confirmPassword}
+                  </p>
+                )}
             </div>
+
+            {/* Role Selection */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Role</span>
@@ -172,32 +194,28 @@ const SignUp = () => {
                 <button
                   type="button"
                   className={`btn ${
-                    values.role === "participant" ? "btn-active" : ""
+                    formik.values.role === "participant" ? "btn-active" : ""
                   }`}
-                  onClick={() =>
-                    handleChange({
-                      target: { name: "role", value: "participant" },
-                    })
-                  }
+                  onClick={() => formik.setFieldValue("role", "participant")}
                 >
                   Participant
                 </button>
                 <button
                   type="button"
                   className={`btn ${
-                    values.role === "creator" ? "btn-active" : ""
+                    formik.values.role === "creator" ? "btn-active" : ""
                   }`}
-                  onClick={() =>
-                    handleChange({ target: { name: "role", value: "creator" } })
-                  }
+                  onClick={() => formik.setFieldValue("role", "creator")}
                 >
                   Creator
                 </button>
               </div>
-              {touched.role && errors.role && (
-                <p className="text-red-500">{errors.role}</p>
+              {formik.touched.role && formik.errors.role && (
+                <p className="text-red-500">{formik.errors.role}</p>
               )}
             </div>
+
+            {/* Submit Button */}
             <div className="form-control mt-6">
               <button type="submit" className="btn btn-primary">
                 Register
