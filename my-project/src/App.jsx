@@ -12,6 +12,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getUserData } from "./services/user.services";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import CreateQuiz from "./components/CreateQuiz/CreateQuiz";
+
 
 function App() {
   const { user, setUser } = useUserStore();
@@ -46,6 +48,12 @@ function App() {
             <AuthenticatedRoute>
               <ProfilePage />
             </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/createQuiz"
+          element={
+              <CreateQuiz />
           }
         />
       </Routes>

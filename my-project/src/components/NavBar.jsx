@@ -25,14 +25,31 @@ const NavBar = () => {
       <div className="flex-none gap-2">
         {user ? (
           <>
-            {/* Display user's avatar if available */}
-            
-              <img src={user.avatarURL || defaultAvatar} alt="Avatar" className="w-10 h-10 rounded-full mr-2.5" />
-            
-            
-
-            <Link to="/Profile" className="btn btn-ghost text-white">My Profile</Link>
-            <Link to="/" onClick={handleLogout} className="btn btn-ghost text-white">Log Out</Link>
+            <div className="flex gap-2">
+    <div className="form-control">
+      <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
+    </div>
+    <div className="dropdown dropdown-end">
+      <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+        <div className="w-10 rounded-full">
+          <img alt="Tailwind CSS Navbar component" src={user.avatarURL||defaultAvatar} />
+        </div>
+      </label>
+      <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+        <li>
+          <Link to={"/Profile"} className="justify-between">
+            Profile
+          </Link>
+        </li>
+        <li>
+          <Link to={"/createQuiz"} className="justify-between">
+            Create Quiz
+          </Link>
+        </li>
+         <li><a onClick={handleLogout}>Logout</a></li>
+      </ul>
+    </div>
+  </div>
           </>
         ) : (
           <>
