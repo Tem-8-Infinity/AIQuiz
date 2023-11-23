@@ -2,13 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { getAuth, updatePassword } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../config/firebase-config';
+import useUserStore from '../../context/store';
+import { changeUserAvatar, updateUserData } from '../../services/user.services';
+
 
 //import useUserStore from '../context/store'; // Update path to your Zustand store
 
 const ProfilePage = () => {
-  //const { user, setUser } = useUserStore(); // Assuming you have user data in Zustand store
-  const [newPassword, setNewPassword] = useState('');
-  const [avatar, setAvatar] = useState(null);
+  const user = useUserStore((state) => state.user);
+  const [firstName, setFirstName] = useState(user?.firstName || '');
+  const [lastName, setLastName] = useState(user?.lastName || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [avatar, setAvatar] = useState(user?.avatarUrl || '');
+  const [newPassword, setNewPassword] = useState(''); 
   const auth = getAuth();
 
   useEffect(() => {
@@ -27,10 +33,28 @@ const ProfilePage = () => {
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     const avatarRef = ref(storage, `avatars/${user.uid}`);
-    await uploadBytes(avatarRef, file);
-    const avatarUrl = await getDownloadURL(avatarRef);
+    const result = await uploadBytes(avatarRef, file);
+    const avatarUrl = await getDownloadURL(result.ref);
+    changeUserAvatar(avatarUrl, user.uid)
     setAvatar(avatarUrl);
   };
+
+  const handleProfileUpdate = async () => {
+    const updatedUserData = {
+      ...user,
+      firstName,
+      lastName,
+      email,
+      avatarUrl: avatar
+    };
+
+    // Call the function to update user data in the database
+    // await updateUserData(user.uid, updatedUserData);
+
+    // Update Zustand store
+    // useUserStore.setState({ user: updatedUserData });
+  };
+
 
   return (
     <div className="container mx-auto p-4">

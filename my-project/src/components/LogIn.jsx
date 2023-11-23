@@ -1,23 +1,22 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase-config";
 import { useNavigate } from "react-router-dom";
-import { useStore } from "zustand";
 import useUserStore from "../context/store";
+import { toast } from 'react-toastify';
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
-  const { user } = useStore(useUserStore);
-  console.log(user, "tata");
+  const user = useUserStore((state) => state.user);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoginError("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      toast.success("Logged in Successfully");
       navigate("/");
     } catch (error) {
       setLoginError("Failed to login. Please check your credentials.");

@@ -36,17 +36,30 @@ export const getUserByHandle = async (handle) => {
   }
 };
 
-export const createUser = async (username, email, phoneNumber, uid, role) => {
-  const userObj = {
-    username,
-    email: email,
-    phoneNumber,
-    createdOn: Date.now(),
-    uid,
-    role
-  }
-  await set(ref(db, 'users/' + uid), userObj)
+export const changeUserAvatar = async (img, uid) => {
+  return update(ref(db), {
+    [`/users/${uid}/avatarURL`]: img,
+  });
 };
+
+export const createUser = async (firstName, lastName, username, email, phoneNumber, uid, role) => {
+  try {
+    const userObj = {
+      firstName,
+      lastName,
+      username,
+      email,
+      phoneNumber,
+      role,
+      uid,
+      avatarURL: ""
+    };
+    await set(ref(db, `users/${uid}`), userObj);
+  } catch (error) {
+    console.error('Error creating user:', error);
+  }
+};
+
 
 export const getUserData = async (uid) => {
   const dbRef = ref(db);
@@ -61,6 +74,14 @@ export const getUserData = async (uid) => {
   } catch (error) {
     console.error('Error fetching user data:', error);
     throw error;
+  }
+};
+
+export const updateUserData = async (uid, userData) => {
+  try {
+    await set(ref(db, `users/${uid}`), userData);
+  } catch (error) {
+    console.error('Error updating user data:', error);
   }
 };
 
