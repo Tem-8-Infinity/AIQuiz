@@ -13,11 +13,15 @@ import { getUserData } from "./services/user.services";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CreateQuiz from "./components/CreateQuiz/CreateQuiz";
+import PrivateHome from "./components/PrivateHome/PrivateHome";
+import { useAuthState } from "react-firebase-hooks/auth";
+
 
 
 function App() {
   const { user, setUser } = useUserStore();
   const auth = getAuth();
+  const [firebaseUser, loading] = useAuthState(auth);
 
   useEffect(() => {
     // Listen for changes in the authentication state
@@ -33,13 +37,15 @@ function App() {
 
     // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, []);
+    }, []);
+    
+
 
   return (
     <div className="App">
       <NavBar />
       <Routes>
-        <Route path="/" element={user ? <Navigate to="/" /> : <Home />} />
+        <Route path="/" element={firebaseUser ? <PrivateHome /> : <Home />} />
         <Route path="/LogIn" element={<LogIn />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route

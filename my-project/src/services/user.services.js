@@ -84,17 +84,3 @@ export const updateUserData = async (uid, userData) => {
     console.error('Error updating user data:', error);
   }
 };
-
-const UserProfile = () => {
-  const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
-
-  // Example of updating user data
-  const updateUser = (newUserData) => {
-    setUser(newUserData);
-  };
-
-  // Render user data or related components
-};
-
-export default UserProfile;
