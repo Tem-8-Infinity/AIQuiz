@@ -62,6 +62,9 @@ const LogIn = () => {
             <div className="form-control mt-6">
               <button className="btn btn-primary">Login</button>
             </div>
+            <div className="flex justify-end">
+            <a className="btn btn-link " href="./SignUp">Sign Up</a>
+            </div>
           </form>
         </div>
       </div>

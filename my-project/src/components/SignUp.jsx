@@ -190,7 +190,8 @@ const SignUp = () => {
               <label className="label">
                 <span className="label-text">Role</span>
               </label>
-              <div className="flex">
+              <div className="flex gap-x-12">
+              <div>
                 <button
                   type="button"
                   className={`btn ${
@@ -209,6 +210,8 @@ const SignUp = () => {
                 >
                   Creator
                 </button>
+                </div>
+                <a className="btn btn-link " href="./LogIn">Log In</a>
               </div>
               {formik.touched.role && formik.errors.role && (
                 <p className="text-red-500">{formik.errors.role}</p>
