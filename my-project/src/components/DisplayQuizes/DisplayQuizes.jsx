@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAllQuizzes } from "../../services/quiz.services";
 import { auth } from "../../config/firebase-config";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const PrivateHome = () => {
+const DisplayQuizes = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
-
+  const { state } = useLocation();
+  const { category } = state;
+  
   useEffect(() => {
     if (user) {
-      getAllQuizzes().then(setQuizzes);
+      getAllQuizzes().then((data) => setQuizzes(data.filter(q => q.quizCategory === category)));
     }
   }, [user]);
 
@@ -54,4 +56,4 @@ const PrivateHome = () => {
   );
 };
 
-export default PrivateHome;
+export default DisplayQuizes;

@@ -15,11 +15,9 @@ import NavBar from "./components/NavBar";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getUserData } from "./services/user.services";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { useAuthState } from "react-firebase-hooks/auth";
-
-
-
+import PrivateHome from "./components/PrivateHome/PrivateHome";
 
 function App() {
   const { user, setUser } = useUserStore();
@@ -46,7 +44,7 @@ function App() {
     <div className="App">
       <NavBar />
       <Routes>
-        <Route path="/" element={firebaseUser ? <DisplayQuizes /> : <Home />} />
+        <Route path="/" element={firebaseUser ? <PrivateHome /> : <Home />} />
         <Route path="/LogIn" element={<LogIn />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route
@@ -57,12 +55,7 @@ function App() {
             </AuthenticatedRoute>
           }
         />
-        <Route
-          path="/createQuiz"
-          element={
-            <CreateQuiz />
-          }
-        />
+        <Route path="/createQuiz" element={<CreateQuiz />} />
         <Route
           path="/StartQuiz/quiz/:id"
           element={
@@ -76,6 +69,14 @@ function App() {
           element={
             <AuthenticatedRoute>
               <QuizResults />
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/DisplayQuizes"
+          element={
+            <AuthenticatedRoute>
+              <DisplayQuizes />
             </AuthenticatedRoute>
           }
         />
