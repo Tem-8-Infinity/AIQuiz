@@ -1,29 +1,27 @@
 import {
-    equalTo,
-    get,
-    orderByChild,
-    query,
-    ref,
-    remove,
-    set,
-    update,
-    onValue,
-    child
-  } from "firebase/database";
-  import { db } from "../config/firebase-config";
-  
-export const getAllQuizzes = async () =>{
-    //Query to retrieve all the quezzes from db
-    const snapshot = await get(query(ref(db, '/quizes')));
-    // If we have quizzes map over all the keys and return the values
-    if(snapshot.exists()){
-        return(
-            // snapshot.val()  === {}
-            Object.keys(snapshot.val()).map((key,index) => ({...snapshot.val()[key], id:index})) 
-        )
-    }else{
-        return(
-            []
-        )
-    }
-}
+  equalTo,
+  get,
+  orderByChild,
+  query,
+  ref,
+  remove,
+  set,
+  update,
+  onValue,
+  child
+} from "firebase/database";
+import { db } from "../config/firebase-config";
+
+export const getAllQuizzes = async () => {
+  const snapshot = await get(query(ref(db, '/quizes'))); // Ensure correct path to quizzes
+  if (snapshot.exists()) {
+    const keys = Object.keys(snapshot.val())
+    return Object.values(snapshot.val()).map((quiz, index) => ({
+      ...quiz,
+      questions: Object.values(quiz.questions || {}),
+      id: keys[index]
+    }));
+  } else {
+    return [];
+  }
+};

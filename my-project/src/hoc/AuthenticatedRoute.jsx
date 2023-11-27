@@ -1,7 +1,5 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useStore } from "zustand";
-import useUserStore from "../context/store";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from '../config/firebase-config';
 
