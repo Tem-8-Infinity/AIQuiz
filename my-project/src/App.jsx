@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthState } from "react-firebase-hooks/auth";
 import PrivateHome from "./components/PrivateHome/PrivateHome";
+import CreateQuestionnaire from "./components/CreateQuestionnaire/CreateQuestionnaire";
 
 function App() {
   const { user, setUser } = useUserStore();
@@ -77,6 +78,14 @@ function App() {
           element={
             <AuthenticatedRoute>
               <DisplayQuizes />
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/CreateQuestionnaire"
+          element={
+            <AuthenticatedRoute>
+              <CreateQuestionnaire />
             </AuthenticatedRoute>
           }
         />
