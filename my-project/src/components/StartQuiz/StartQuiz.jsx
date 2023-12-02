@@ -21,6 +21,8 @@ const StartQuiz = () => {
   };
 
   const question = quiz.questions[currentQuestionIndex];
+   console.log(question);
+   console.log(quiz)
   const currentAnswer = userAnswers[currentQuestionIndex];
 
   const decodeHtml = (html) => {
@@ -33,9 +35,9 @@ const StartQuiz = () => {
     <div className='container mx-auto p-4'>
       <div className='card bg-base-100 shadow-xl'>
         <div className='card-body'>
-          <h2 className='card-title'>{decodeHtml(question.question)}</h2>
+          <h2 className='card-title'>{decodeHtml(question?.question)}</h2>
           <div className='space-y-2'>
-            {[...question.incorrect_answers, question.correct_answer].sort().map((answer, index) => (
+            {[...question?.incorrect_answers, question?.correct_answer].sort().map((answer, index) => (
               <button 
                 key={index} 
                 className={`btn btn-block ${currentAnswer === answer ? 'btn-primary' : 'btn-outline'}`}

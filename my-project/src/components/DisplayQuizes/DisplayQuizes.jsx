@@ -13,7 +13,7 @@ const DisplayQuizes = () => {
   
   useEffect(() => {
     if (user) {
-      getAllQuizzes().then((data) => setQuizzes(data.filter(q => q.quizCategory === category)));
+      getAllQuizzes().then((data) => setQuizzes(data.filter(q => q.quizCategory === category && "questions" in q && q.questions.length > 0)));
     }
   }, [user]);
 

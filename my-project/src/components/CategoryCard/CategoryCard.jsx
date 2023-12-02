@@ -8,7 +8,7 @@ const CategoryCard = ({category}) => {
     navigate(`/DisplayQuizes`, {state: {category}})
   }
   return (
-    <div className="card w-64 h-50 bg-neutral text-neutral-content">
+    <div className="card w-64 h-50 bg-third-color text-neutral-content">
   <div className="card-body items-center text-center">
     <h2 className="card-title"><div className="badge badge-primary badge-lg"></div>
 <div className="badge badge-primary badge-md"></div>
