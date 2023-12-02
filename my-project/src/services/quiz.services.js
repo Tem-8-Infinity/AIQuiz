@@ -35,7 +35,8 @@ export const createQuiz = async (createdBy,isPrivate,quizCategory,quizDifficulty
     quizCategory,
     quizDifficulty,
     quizDuration,
-    quizName 
+    quizName,
+    questions:[]
   }); 
   console.log(quizRef.key);
   return await quizRef.key;

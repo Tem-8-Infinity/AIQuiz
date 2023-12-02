@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { createQuiz } from '../../services/quiz.services';
 import { Routes, Route, Navigate, redirect, useNavigate} from "react-router-dom";
+import { useFormik } from 'formik';
+
+
 
 
 const CreateQuiz = () => {
@@ -32,7 +35,7 @@ const CreateQuiz = () => {
     // Implement the logic to create a quiz using quizDetails
     console.log('Quiz Created:', quizDetails);
     const key = await createQuiz('Bob',quizDetails.isPrivate,quizDetails.category,'hard',quizDetails.timer,quizDetails.title) //createdBy,isPrivate,quizCategory,quizDifficulty, quizDuration, quizName
-    navigate(`/${key}`);
+    navigate(`/CreateQuestionnaire/${key}`);
   };
 
   const categories = ['Categories','Books','Films','Animals','History'];

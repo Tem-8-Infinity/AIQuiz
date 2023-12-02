@@ -82,7 +82,7 @@ function App() {
           }
         />
         <Route
-          path="/CreateQuestionnaire"
+          path="/CreateQuestionnaire/:quizId"
           element={
             <AuthenticatedRoute>
               <CreateQuestionnaire />
