@@ -4,10 +4,10 @@ import CategoryCard from '../CategoryCard/CategoryCard';
 
 
 const PrivateHome = () => {
-    const categories = ["Books","Mythology","History", "Sport", "Education",]
+    const categories = ["Books","Mythology","History", "Sport", "Education","Home","Training"]
 
   return (
-  <div className='flex flex-gap '>
+  <div className='grid grid-cols-5  '>
     {categories.map((category) => <CategoryCard key={category} category={category}/>)}
 </div>
   )

@@ -8,7 +8,8 @@ import {
   set,
   update,
   onValue,
-  child
+  child,
+  push
 } from "firebase/database";
 import { db } from "../config/firebase-config";
 
@@ -24,4 +25,19 @@ export const getAllQuizzes = async () => {
   } else {
     return [];
   }
+};
+
+export const createQuiz = async (createdBy,isPrivate,quizCategory,quizDifficulty, quizDuration, quizName ) => {
+  const quizRef = push(ref(db, '/quizes'));
+ await set((quizRef),{
+    createdBy,
+    isPrivate,
+    quizCategory,
+    quizDifficulty,
+    quizDuration,
+    quizName,
+    questions:[]
+  }); 
+  console.log(quizRef.key);
+  return await quizRef.key;
 };

@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react';
+import { createQuiz } from '../../services/quiz.services';
+import { Routes, Route, Navigate, redirect, useNavigate} from "react-router-dom";
+import { useFormik } from 'formik';
+
+
+
 
 const CreateQuiz = () => {
   const [quizDetails, setQuizDetails] = useState({
     category: 'Categories',
     title: '',
     timer: '',
-    isPrivate: false,
+    isPrivate: false
   });
+
+  const navigate = useNavigate();
 
   const handleInputChange = (evt) => {
     setQuizDetails((prevDetails) => ({
@@ -23,9 +31,11 @@ const CreateQuiz = () => {
     }));
   };
 
-  const handleCreateQuiz = () => {
+  const handleCreateQuiz = async () => {
     // Implement the logic to create a quiz using quizDetails
     console.log('Quiz Created:', quizDetails);
+    const key = await createQuiz('Bob',quizDetails.isPrivate,quizDetails.category,'hard',quizDetails.timer,quizDetails.title) //createdBy,isPrivate,quizCategory,quizDifficulty, quizDuration, quizName
+    navigate(`/CreateQuestionnaire/${key}`);
   };
 
   const categories = ['Categories','Books','Films','Animals','History'];
@@ -91,7 +101,7 @@ const CreateQuiz = () => {
             </button>
           </div>
           <div>
-            <button className='btn btn-primary' onClick={handleCreateQuiz}>Create Questionnaire</button>
+            <button className='btn btn-primary' onClick={handleCreateQuiz}>Create Questionnaire</button> 
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+<<<<<<< HEAD
 .root,
 #root,
 #docs-root {
@@ -9,3 +10,19 @@
   --secondary-color: #fff275;
   --third-color: #ff8c42;
 }
+=======
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+{
+opacity: 1;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button
+{
+position: absolute;
+top: 0;
+right: 0;
+height: 100%;
+}
+>>>>>>> 841a2cd89adfc31a9cf4c802168a174ce603d2b4
