@@ -14,7 +14,7 @@ import {
 import { db } from "../config/firebase-config";
 
 export const getAllQuizzes = async () => {
-  const snapshot = await get(query(ref(db, '/quizes'))); // Ensure correct path to quizzes
+  const snapshot = await get(query(ref(db, '/quizzes'))); // Ensure correct path to quizzes
   if (snapshot.exists()) {
     const keys = Object.keys(snapshot.val())
     return Object.values(snapshot.val()).map((quiz, index) => ({

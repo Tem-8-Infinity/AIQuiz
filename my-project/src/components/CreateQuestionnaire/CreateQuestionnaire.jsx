@@ -13,7 +13,7 @@ const CreateQuestionnaire = () => {
       console.log(questions);
     },[questions]);
     useEffect(()=>{
-    get(ref(db,`/quizes/${quizId}`)).then((snapshot)=>{
+    get(ref(db,`/quizzes/${quizId}`)).then((snapshot)=>{
       console.log(snapshot.val());
       setQuiestions(snapshot.val().questions || []);
     })
@@ -111,7 +111,7 @@ const CreateQuestionnaire = () => {
         const data = {
           questions, 
         }
-        await update(ref(db,`/quizes/${quizId}`),data)
+        await update(ref(db,`/quizzes/${quizId}`),data)
       }}>Submit</button>
     </>
   )
