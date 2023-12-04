@@ -16,7 +16,17 @@ const StartQuiz = () => {
     if (currentQuestionIndex < quiz.questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
+      if (Object.keys(userAnswers).length < quiz.questions.length) {
+        alert('Please answer all questions before proceeding.');
+        return;
+      }
       navigate('/QuizResults', { state: { quiz, userAnswers } });
+    }
+  };
+
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
   };
 
@@ -47,11 +57,20 @@ const StartQuiz = () => {
               </button>
             ))}
           </div>
+          <div className='card-actions justify-between mt-4'>
+            <button 
+              className='btn btn-primary bg-blue-400' 
+              onClick={handlePreviousQuestion}
+              disabled={currentQuestionIndex === 0}
+            >
+              Previous Question
+            </button>
           <div className='card-actions justify-end mt-4'>
-            <button className='btn btn-primary' onClick={handleNextQuestion}>Next Question</button>
+            <button className='btn btn-primary bg-blue-400' onClick={handleNextQuestion}>Next Question</button>
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

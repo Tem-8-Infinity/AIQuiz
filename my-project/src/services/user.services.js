@@ -36,6 +36,16 @@ export const getUserByHandle = async (handle) => {
   }
 };
 
+export const getUserNameByUserId = async (userId) => {
+  try {
+    const data = await get(ref(db, `users/${userId}/username`));
+    return data.val();
+  } catch (error) {
+    console.error(error.message);
+    return null;
+  }
+}
+
 export const changeUserAvatar = async (img, uid) => {
   return update(ref(db), {
     [`/users/${uid}/avatarURL`]: img,
@@ -90,7 +100,7 @@ export const addCompletedQuiz = async (uid, quizId) => {
   // This assumes you're storing an array of quizIds, you could also use a map or other structure
   const completedQuizzesSnapshot = await get(completedQuizzesRef);
   const completedQuizzes = completedQuizzesSnapshot.exists() ? completedQuizzesSnapshot.val() : [];
-  
+
   if (!completedQuizzes.includes(quizId)) {
     completedQuizzes.push(quizId);
     await set(completedQuizzesRef, completedQuizzes);

@@ -22,7 +22,6 @@ import PrivateHome from "./components/PrivateHome/PrivateHome";
 import CreateQuestionnaire from "./components/CreateQuestionnaire/CreateQuestionnaire";
 import DisplayQuestionnaire from "./components/DisplayQuestionnaire/DisplayQuestionnaire";
 
-
 function App() {
   const { user, setUser } = useUserStore();
   const auth = getAuth();
@@ -90,10 +89,11 @@ function App() {
           }
         />
         <Route
-          path="/Dashboard/:quizId" element={
+          path="/Dashboard/:quizId"
+          element={
             <AuthenticatedRoute>
               <Dashboard />
-              </AuthenticatedRoute>
+            </AuthenticatedRoute>
           }
         />
         <Route

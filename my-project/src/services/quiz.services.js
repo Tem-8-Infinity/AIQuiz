@@ -27,6 +27,16 @@ export const getAllQuizzes = async () => {
   }
 };
 
+export const getQuizById = async (quizId) => {
+  const snapshot = await get(query(ref(db, `/quizzes/${quizId}`)));
+
+  if (snapshot.exists()) {
+    return snapshot.val();
+  } else {
+    return [];
+  }
+}
+
 export const getAllQuizzesNoFilter = async () => {
   const quizzesRef = ref(db, 'quizzes');
   try {
@@ -43,17 +53,17 @@ export const getAllQuizzesNoFilter = async () => {
   }
 };
 
-export const createQuiz = async (createdBy,isPrivate,quizCategory,quizDifficulty, quizDuration, quizName ) => {
+export const createQuiz = async (createdBy, isPrivate, quizCategory, quizDifficulty, quizDuration, quizName) => {
   const quizRef = push(ref(db, '/quizzes'));
- await set((quizRef),{
+  await set((quizRef), {
     createdBy,
     isPrivate,
     quizCategory,
     quizDifficulty,
     quizDuration,
     quizName,
-    questions:[]
-  }); 
+    questions: []
+  });
   console.log(quizRef.key);
   return await quizRef.key;
 };
@@ -62,6 +72,15 @@ export const createQuiz = async (createdBy,isPrivate,quizCategory,quizDifficulty
 export const storeQuizResult = async (uid, quizId, score) => {
   const quizResultsRef = ref(db, `quizResults/${quizId}/${uid}`);
   await set(quizResultsRef, { score });
+};
+
+export const storeDataInResult = async (quizId, score) => {
+  debugger;
+  const resultsRef = ref(db, `quizzes/${quizId}/results`)
+  const resultsSnapshot = await get(query(resultsRef));
+  const results = resultsSnapshot.val();
+  results.push(score)
+  await set(resultsRef, results)
 };
 
 // Retrieve the top performers for a quiz

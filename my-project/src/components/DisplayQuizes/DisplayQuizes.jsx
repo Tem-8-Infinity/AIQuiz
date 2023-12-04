@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../config/firebase-config';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { getAllQuizzes } from '../../services/quiz.services';
-import { getCompletedQuizzes } from '../../services/user.services';
+import React, { useState, useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../config/firebase-config";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAllQuizzes } from "../../services/quiz.services";
+import { getCompletedQuizzes } from "../../services/user.services";
 
 const DisplayQuizes = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -15,26 +15,29 @@ const DisplayQuizes = () => {
 
   useEffect(() => {
     if (user) {
-      // Fetch completed quizzes for the user
+      // Fetches completed quizzes for the user
       getCompletedQuizzes(user.uid).then(setCompletedQuizzes);
-      // Fetch all quizzes
+      // Fetches all quizzes
       getAllQuizzes().then((data) => {
-        const filteredQuizzes = category ? 
-          data.filter(quiz => quiz.quizCategory === category || category === "All Categories") : 
-          data;
+        const filteredQuizzes = category
+          ? data.filter(
+              (quiz) =>
+                quiz.quizCategory === category || category === "All Categories"
+            )
+          : data;
         setQuizzes(filteredQuizzes);
       });
     }
   }, [user, category]);
 
   const startQuiz = (quiz) => {
-    // Check if the user has completed this quiz
+    // Checks if the user has completed this specific quiz
     if (completedQuizzes.includes(quiz.id)) {
-      alert('You have already completed this quiz.');
+      alert("You have already completed this quiz.");
       return;
     }
-    // If not, navigate to the quiz
-    navigate(`/StartQuiz/quiz/${quiz.id}`, { state: { quiz } });
+    // If not completed, the user is redirected/navigated to the quiz
+    navigate(`/Dashboard/${quiz.id}`);
   };
 
   return (
@@ -56,8 +59,12 @@ const DisplayQuizes = () => {
             <p>Duration: {quiz.duration}</p>
             <p>End Date: {new Date(quiz.endDate).toLocaleString()}</p>
             <button
-              disabled={completedQuizzes.includes(quiz.id)}
-              className={`btn border-none bg-blue-400 w-28 mx-auto ${completedQuizzes.includes(quiz.id) ? "opacity-50 cursor-not-allowed" : ""}`}
+              disabled={quiz.results.some((r) => r.userID === user.uid)}
+              className={`btn border-none bg-blue-400 w-28 mx-auto ${
+                completedQuizzes.includes(quiz.id)
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
               onClick={() => startQuiz(quiz)}
             >
               Start Quiz
