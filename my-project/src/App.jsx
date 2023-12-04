@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAuthState } from "react-firebase-hooks/auth";
 import PrivateHome from "./components/PrivateHome/PrivateHome";
 import CreateQuestionnaire from "./components/CreateQuestionnaire/CreateQuestionnaire";
+import DisplayQuestionnaire from "./components/DisplayQuestionnaire/DisplayQuestionnaire";
 
 
 function App() {
@@ -92,6 +93,14 @@ function App() {
           path="/Dashboard/:quizId" element={
             <AuthenticatedRoute>
               <Dashboard />
+              </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/DisplayQuestionnaire/:quizId"
+          element={
+            <AuthenticatedRoute>
+              <DisplayQuestionnaire />
             </AuthenticatedRoute>
           }
         />
