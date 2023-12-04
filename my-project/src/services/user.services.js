@@ -84,3 +84,22 @@ export const updateUserData = async (uid, userData) => {
     console.error('Error updating user data:', error);
   }
 };
+
+export const addCompletedQuiz = async (uid, quizId) => {
+  const completedQuizzesRef = ref(db, `completedQuizzes/${uid}`);
+  // This assumes you're storing an array of quizIds, you could also use a map or other structure
+  const completedQuizzesSnapshot = await get(completedQuizzesRef);
+  const completedQuizzes = completedQuizzesSnapshot.exists() ? completedQuizzesSnapshot.val() : [];
+  
+  if (!completedQuizzes.includes(quizId)) {
+    completedQuizzes.push(quizId);
+    await set(completedQuizzesRef, completedQuizzes);
+  }
+};
+
+// Retrieve completed quizzes for a user
+export const getCompletedQuizzes = async (uid) => {
+  const completedQuizzesRef = ref(db, `completedQuizzes/${uid}`);
+  const snapshot = await get(completedQuizzesRef);
+  return snapshot.exists() ? snapshot.val() : [];
+};

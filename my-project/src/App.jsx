@@ -12,6 +12,7 @@ import StartQuiz from "./components/StartQuiz/StartQuiz";
 import QuizResults from "./components/QuizResults/QuizResults";
 import useUserStore from "./context/store";
 import NavBar from "./components/NavBar";
+import Dashboard from "./components/Dashboard/Dashboard";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getUserData } from "./services/user.services";
 import { ToastContainer } from "react-toastify";
@@ -19,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAuthState } from "react-firebase-hooks/auth";
 import PrivateHome from "./components/PrivateHome/PrivateHome";
 import CreateQuestionnaire from "./components/CreateQuestionnaire/CreateQuestionnaire";
+
 
 function App() {
   const { user, setUser } = useUserStore();
@@ -83,6 +85,13 @@ function App() {
           element={
             <AuthenticatedRoute>
               <CreateQuestionnaire />
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/Dashboard/:quizId" element={
+            <AuthenticatedRoute>
+              <Dashboard />
             </AuthenticatedRoute>
           }
         />

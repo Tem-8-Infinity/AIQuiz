@@ -57,3 +57,27 @@ export const createQuiz = async (createdBy,isPrivate,quizCategory,quizDifficulty
   console.log(quizRef.key);
   return await quizRef.key;
 };
+
+// Store the results of a quiz for a user
+export const storeQuizResult = async (uid, quizId, score) => {
+  const quizResultsRef = ref(db, `quizResults/${quizId}/${uid}`);
+  await set(quizResultsRef, { score });
+};
+
+// Retrieve the top performers for a quiz
+export const getTopPerformers = async (quizId) => {
+  const quizResultsRef = ref(db, `quizResults/${quizId}`);
+  const snapshot = await get(quizResultsRef);
+  if (snapshot.exists()) {
+    let results = [];
+    snapshot.forEach((childSnapshot) => {
+      let userId = childSnapshot.key;
+      let score = childSnapshot.val().score;
+      results.push({ userId, score });
+    });
+    // Sort and get the top 3 performers
+    results.sort((a, b) => b.score - a.score);
+    return results.slice(0, 3);
+  }
+  return [];
+};
