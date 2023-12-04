@@ -37,7 +37,7 @@ const StartQuiz = () => {
         <div className='card-body'>
           <h2 className='card-title'>{decodeHtml(question?.question)}</h2>
           <div className='space-y-2'>
-            {[...question?.incorrect_answers, question?.correct_answer].sort().map((answer, index) => (
+            {[...question?.incorrectAnswers, question?.correctAnswer].map((answer, index) => (
               <button 
                 key={index} 
                 className={`btn btn-block ${currentAnswer === answer ? 'btn-primary' : 'btn-outline'}`}

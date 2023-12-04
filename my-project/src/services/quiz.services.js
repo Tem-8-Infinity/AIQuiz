@@ -27,8 +27,24 @@ export const getAllQuizzes = async () => {
   }
 };
 
+export const getAllQuizzesNoFilter = async () => {
+  const quizzesRef = ref(db, 'quizzes');
+  try {
+    const snapshot = await get(quizzesRef);
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      console.log('No quizzes available');
+      return [];
+    }
+  } catch (error) {
+    console.error('Error fetching quizzes:', error);
+    throw error;
+  }
+};
+
 export const createQuiz = async (createdBy,isPrivate,quizCategory,quizDifficulty, quizDuration, quizName ) => {
-  const quizRef = push(ref(db, '/quizes'));
+  const quizRef = push(ref(db, '/quizzes'));
  await set((quizRef),{
     createdBy,
     isPrivate,

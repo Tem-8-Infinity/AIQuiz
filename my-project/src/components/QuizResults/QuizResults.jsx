@@ -9,7 +9,7 @@ const QuizResults = () => {
   let correctAnswersCount = 0;
 
   quiz.questions.forEach((question, index) => {
-    if (userAnswers[index] === question.correct_answer) {
+    if (userAnswers[index] === question.correctAnswer) {
       correctAnswersCount++;
     }
   });
@@ -19,7 +19,7 @@ const QuizResults = () => {
   const successRate = (correctAnswersCount / quiz.questions.length) * 100;
 
   const handleGoBack = () => {
-    navigate('/PrivateHome'); // Make sure this route is defined in your App.jsx
+    navigate('/');
   };
 
   return (
@@ -27,10 +27,10 @@ const QuizResults = () => {
       {quiz.questions.map((question, index) => (
         <div key={index} className="mb-4">
           <p>{question.question}</p>
-          <p style={{ color: userAnswers[index] === question.correct_answer ? 'green' : 'red' }}>
+          <p style={{ color: userAnswers[index] === question.correctAnswer ? 'green' : 'red' }}>
             Your Answer: {userAnswers[index]}
-            {userAnswers[index] !== question.correct_answer && (
-              <span className="ml-2 text-blue-600 hover:text-blue-800 cursor-pointer" title={question.correct_answer}>
+            {userAnswers[index] !== question.correctAnswer && (
+              <span className="ml-2 text-blue-600 hover:text-blue-800 cursor-pointer" title={question.correctAnswer}>
                 Hover to see the correct answer
               </span>
             )}

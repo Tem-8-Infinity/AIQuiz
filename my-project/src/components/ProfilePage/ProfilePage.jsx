@@ -6,7 +6,7 @@ import useUserStore from '../../context/store';
 import { changeUserAvatar, updateUserData } from '../../services/user.services';
 
 
-//import useUserStore from '../context/store'; // Update path to your Zustand store
+//import useUserStore from '../context/store'; // Update Zustand store
 
 const ProfilePage = () => {
   const user = useUserStore((state) => state.user);
@@ -18,7 +18,6 @@ const ProfilePage = () => {
   const auth = getAuth();
 
   useEffect(() => {
-    // Fetch user data if needed
   }, []);
 
   const handlePasswordChange = async () => {
@@ -78,7 +77,7 @@ const ProfilePage = () => {
           type="password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
-          className="p-2 border rounded w-full mb-2"
+          className="p-2 border rounded w-50% mb-2"
         />
         <button onClick={handlePasswordChange} className="bg-blue-500 text-white p-2 rounded">
           Change Password

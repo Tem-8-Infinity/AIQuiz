@@ -6,7 +6,7 @@ import { db } from '../../config/firebase-config';
 
 const CreateQuestionnaire = () => {
     const [points, setPoints] = useState(0);
-    const [questions,setQuiestions] = useState([]);
+    const [questions,setQuestions] = useState([]);
     const {quizId} = useParams();
     console.log(quizId);
     useEffect(()=>{
@@ -15,7 +15,7 @@ const CreateQuestionnaire = () => {
     useEffect(()=>{
     get(ref(db,`/quizzes/${quizId}`)).then((snapshot)=>{
       console.log(snapshot.val());
-      setQuiestions(snapshot.val().questions || []);
+      setQuestions(snapshot.val().questions || []);
     })
     },[])
     return (
@@ -27,7 +27,7 @@ const CreateQuestionnaire = () => {
             <React.Fragment key={id}>
           <div className='flex flex-col p-4'>
           <div className='flex items-center gap-2 mb-5 w-full '> {/* The Question */}
-          <label htmlFor="">Question:</label><input value={question.question} onChange={(e)=>{setQuiestions((q)=>{
+          <label htmlFor="">Question:</label><input value={question.question} onChange={(e)=>{setQuestions((q)=>{
           return q.map((item,i)=>{
             if(i === id){
               return (
@@ -50,7 +50,7 @@ const CreateQuestionnaire = () => {
                 <React.Fragment key={e}>
                 <div className='flex items-center gap-2 mb-5 w-full '> {/* The Question */}
                 <label htmlFor="">Option:</label><input value={question.options[e]} onChange={(o)=>{
-                  setQuiestions((q)=>{
+                  setQuestions((q)=>{
                     return q.map((item,i)=>{
                       if(i === id){
                         return(
@@ -80,7 +80,7 @@ const CreateQuestionnaire = () => {
 
             })}
             <button onClick={()=>{
-              setQuiestions(q=>q.map((e,i)=>{
+              setQuestions(q=>q.map((e,i)=>{
                 if(i===id){
                   return({
                     ...e, 
@@ -98,7 +98,7 @@ const CreateQuestionnaire = () => {
       })}
       <div>
       <button className='' onClick={()=>{
-        setQuiestions([...questions,{
+        setQuestions([...questions,{
           id: questions.length,
           question: "",
           options: [""],

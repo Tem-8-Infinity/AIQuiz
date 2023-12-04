@@ -41,7 +41,7 @@ const SignUp = () => {
   });
 
   return (
-    <div className="hero min-h-screen bg-gray-400">
+    <div className="hero min-h-screen bg-gray-300">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left">
           <h1 className="text-5xl font-bold">Register now!</h1>
@@ -220,7 +220,7 @@ const SignUp = () => {
 
             {/* Submit Button */}
             <div className="form-control mt-6">
-              <button type="submit" className="btn bg-blue-400">
+              <button type="submit" className="btn bg-blue-400"style={{ border: "none", padding: "3%" }}>
                 Register
               </button>
             </div>

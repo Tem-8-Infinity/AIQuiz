@@ -1,6 +1,6 @@
 const Home = () => {
   return (
-    <div className="hero min-h-screen bg-base-200">
+    <div className="hero min-h-screen bg-gray-300">
   <div className="hero-content flex-col lg:flex-row">
     <img src="https://picsum.photos/200/300" className="max-w-sm rounded-lg shadow-2xl" />
     <div className="flex flex-col items-center justify-center ">
