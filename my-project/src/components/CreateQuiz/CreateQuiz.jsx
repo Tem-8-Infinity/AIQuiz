@@ -35,7 +35,7 @@ const CreateQuiz = () => {
     // Implement the logic to create a quiz using quizDetails
     console.log('Quiz Created:', quizDetails);
     const key = await createQuiz('Bob',quizDetails.isPrivate,quizDetails.category,'hard',quizDetails.timer,quizDetails.title) //createdBy,isPrivate,quizCategory,quizDifficulty, quizDuration, quizName
-    navigate(`/CreateQuestionnaire/${key}`);
+    navigate(`/DisplayQuestionnaire/${key}`);
   };
 
   const categories = ['Categories','Books','Films','Animals','History'];
@@ -101,7 +101,7 @@ const CreateQuiz = () => {
             </button>
           </div>
           <div>
-            <button className='btn btn-primary' onClick={handleCreateQuiz}>Create Questionnaire</button> 
+            <button className='btn btn-primary' onClick={handleCreateQuiz}>Display Questionnaire</button> 
           </div>
         </div>
       </div>
