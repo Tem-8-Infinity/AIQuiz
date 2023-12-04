@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import LogIn from "./components/LogIn";
 import SignUp from "./components/SignUp";
@@ -27,10 +27,8 @@ function App() {
   const [firebaseUser, loading] = useAuthState(auth);
 
   useEffect(() => {
-    // Listen for changes in the authentication state
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
-        // User is signed in, update the Zustand store
         const { uid } = firebaseUser;
         getUserData(uid).then((userData) => {
           setUser(userData);
@@ -38,7 +36,6 @@ function App() {
       }
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
@@ -105,7 +102,7 @@ function App() {
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
-        rtl
+        rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover

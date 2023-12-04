@@ -14,7 +14,7 @@ import {
 import { db } from "../config/firebase-config";
 
 export const getAllQuizzes = async () => {
-  const snapshot = await get(query(ref(db, '/quizes'))); // Ensure correct path to quizzes
+  const snapshot = await get(query(ref(db, '/quizzes'))); // Ensure correct path to quizzes
   if (snapshot.exists()) {
     const keys = Object.keys(snapshot.val())
     return Object.values(snapshot.val()).map((quiz, index) => ({
@@ -27,8 +27,24 @@ export const getAllQuizzes = async () => {
   }
 };
 
+export const getAllQuizzesNoFilter = async () => {
+  const quizzesRef = ref(db, 'quizzes');
+  try {
+    const snapshot = await get(quizzesRef);
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      console.log('No quizzes available');
+      return [];
+    }
+  } catch (error) {
+    console.error('Error fetching quizzes:', error);
+    throw error;
+  }
+};
+
 export const createQuiz = async (createdBy,isPrivate,quizCategory,quizDifficulty, quizDuration, quizName ) => {
-  const quizRef = push(ref(db, '/quizes'));
+  const quizRef = push(ref(db, '/quizzes'));
  await set((quizRef),{
     createdBy,
     isPrivate,

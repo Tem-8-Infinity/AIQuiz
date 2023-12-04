@@ -9,15 +9,31 @@ const DisplayQuizes = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { category } = state;
-  
+  const category = state?.category; // This will be undefined if no category is passed
+
   useEffect(() => {
     if (user) {
-      getAllQuizzes().then((data) => setQuizzes(data.filter(q => q.quizCategory === category && "questions" in q && q.questions.length > 0)));
+      getAllQuizzes().then((data) => {
+        if (category) {
+          setQuizzes(
+            data.filter(
+              (q) =>
+                (q.quizCategory === category ||
+                  category === "All Categories") &&
+                "questions" in q &&
+                q.questions.length > 0
+            )
+          );
+        } else {
+          setQuizzes(
+            data.filter((q) => "questions" in q && q.questions.length > 0)
+          );
+        }
+      });
     }
-  }, [user]);
+  }, [user, category]);
 
-  if (!user) return null; // or redirect to login page
+  if (!user) return null;
 
   const startQuiz = (quiz) => {
     navigate(`/StartQuiz/quiz/${quiz.id}`, { state: { quiz } });
@@ -29,24 +45,41 @@ const DisplayQuizes = () => {
     return txt.value;
   };
 
+  const selectBadgeColor = (quizDifficulty) => {
+    return quizDifficulty === "Hard"
+      ? "bg-red-600"
+      : quizDifficulty === "Medium"
+      ? "bg-orange-600"
+      : "bg-green-800";
+  };
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2 ">
       {quizzes.map((quiz, index) => (
-        <div key={index} className="card bg-neutral text-neutral-content">
+        <div
+          key={index}
+          className="card bg-neutral text-neutral-content"
+        >
           <div className="card-body">
-            <h2 className="card-title">{decodeHtml(quiz.createdBy)}</h2>
+            <h2 className="card-title">
+              {decodeHtml(quiz.quizName)}{" "}
+              <div
+                className={`badge badge-secondary ${selectBadgeColor(
+                  quiz.quizDifficulty
+                )}`}
+                style={{ border: "none", padding: "3%", marginBottom: 4 }}
+              >
+                {quiz.quizDifficulty}
+              </div>
+            </h2>
+            <p>Created by: {quiz.createdBy}</p>
+            <p>Category: {quiz.quizCategory}</p>
+            <p>Duration: {quiz.duration}</p>
             <p>End Date: {new Date(quiz.endDate).toLocaleString()}</p>
-            <ul>
-              {quiz.questions &&
-                quiz.questions.map((question, qIndex) => (
-                  <li key={qIndex}>
-                    <p>
-                      Q{qIndex + 1}: {decodeHtml(question.question)}
-                    </p>
-                  </li>
-                ))}
-            </ul>
-            <button className="btn btn-primary" onClick={() => startQuiz(quiz)}>
+            <button
+              className="btn border-none bg-blue-400 w-28 mx-auto"
+              onClick={() => startQuiz(quiz)}
+            >
               Start Quiz
             </button>
           </div>

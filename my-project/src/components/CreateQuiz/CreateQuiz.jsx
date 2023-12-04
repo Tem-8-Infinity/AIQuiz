@@ -87,6 +87,28 @@ const CreateQuiz = () => {
             />
           </div>
           <div>
+            <label>Start Date :</label>
+            <input 
+              value={quizDetails.timer}
+              onChange={handleInputChange} 
+              name='startDate'
+              type="date" 
+              placeholder="Set start date" 
+              className="input input-bordered w-full max-w-xs" 
+            />
+          </div>
+          <div>
+            <label>End Date :</label>
+            <input 
+              value={quizDetails.timer}
+              onChange={handleInputChange} 
+              name='endDate'
+              type="date" 
+              placeholder="Set end date" 
+              className="input input-bordered w-full max-w-xs" 
+            />
+          </div>
+          <div>
             <button 
               className={`btn ${quizDetails.isPrivate ? 'btn-outline' : 'btn-primary'}`} 
               onClick={() => handlePrivacyChange(false)}
