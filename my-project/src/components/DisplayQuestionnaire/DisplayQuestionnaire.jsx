@@ -25,13 +25,33 @@ const DisplayQuestionnaire = () => {
   return (
     <>
     <div>DisplayQuestionnaire</div>
-    {quizId}
-    <button className="btn btn-primary" onClick={()=>{
-      navigate(`/CreateQuestionnaire/${quizId}`)
-    }}>Create Questionnaire</button>
+
     <ul>
+      <li className='card shadow-xl rounded-md m-5 hover:shadow-none transition-shadow duration-500'>
+        <div className='flex flex-row gap-5 card-body font-bold text-lg'>
+          <div>1.</div>
+          Question one Question oneQuestion oneQuestion one ?
+        </div>
+      </li>
+      <li className='card shadow-xl rounded-md m-5 hover:shadow-none transition-shadow duration-500'>
+        <div className='flex flex-row gap-5 card-body font-bold text-lg'>
+          <div>1.</div>
+          Question one Question oneQuestion oneQuestion one ?
+        </div>
+      </li>
+      <li className='card shadow-xl rounded-md m-5 hover:shadow-none transition-shadow duration-500'>
+        <div className='flex flex-row gap-5 card-body font-bold text-lg'>
+          <div>1.</div>
+          Question one Question oneQuestion oneQuestion one ?
+        </div>
+      </li>
+        
+      
       {questionnaires.map((q,id)=>(<li key={id}>{q.question}</li>))}
     </ul>
+    <button className="btn btn-primary ml-5" onClick={()=>{
+      navigate(`/CreateQuestionnaire/${quizId}`)
+    }}>Create Questionnaire</button>
     </>
   )
 }

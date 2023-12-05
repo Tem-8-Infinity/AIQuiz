@@ -19,24 +19,24 @@ const CreateQuestionnaire = () => {
         await push(questionnaireRef,data)
         navigate(`/DisplayQuestionnaire/${quizId}`)
       }}>
-        <input type="text" placeholder="Question" value={questionnaire.question} onChange={(e)=>{setQuestionnaire({
+        <input type="text" placeholder="Write a Question" value={questionnaire.question} onChange={(e)=>{setQuestionnaire({
           ...questionnaire,
           question: e.target.value,
         })}} className="input input-bordered w-full " />
         <div className='flex flex-col gap-5 pl-5'>
-        <input type="text" placeholder="Question" value={questionnaire.optionOne} onChange={(e)=>{setQuestionnaire({
+        <input type="text" placeholder="Write The First Option" value={questionnaire.optionOne} onChange={(e)=>{setQuestionnaire({
           ...questionnaire,
           optionOne: e.target.value,
         })}} className="input input-bordered w-full " />
-        <input type="text" placeholder="Question" value={questionnaire.optionTwo} onChange={(e)=>{setQuestionnaire({
+        <input type="text" placeholder="Write The Second Option" value={questionnaire.optionTwo} onChange={(e)=>{setQuestionnaire({
           ...questionnaire,
           optionTwo: e.target.value,
         })}} className="input input-bordered w-full " />
-        <input type="text" placeholder="Question" value={questionnaire.optionThree} onChange={(e)=>{setQuestionnaire({
+        <input type="text" placeholder="Write The Third Option" value={questionnaire.optionThree} onChange={(e)=>{setQuestionnaire({
           ...questionnaire,
           optionThree: e.target.value,
         })}} className="input input-bordered w-full " />
-        <input type="text" placeholder="Question" value={questionnaire.optionFour} onChange={(e)=>{setQuestionnaire({
+        <input type="text" placeholder="Write The Fourth Option" value={questionnaire.optionFour} onChange={(e)=>{setQuestionnaire({
           ...questionnaire,
           optionFour: e.target.value,
         })}} className="input input-bordered w-full " />

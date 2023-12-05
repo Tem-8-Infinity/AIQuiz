@@ -11,7 +11,7 @@ const CreateQuiz = () => {
     category: 'Categories',
     title: '',
     timer: '',
-    isPrivate: false
+    isPrivate: false,
   });
 
   const navigate = useNavigate();
