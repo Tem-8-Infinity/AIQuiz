@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { getQuizQuestions } from '../../services/quizzes.services';
-
+import React, { useState, useEffect } from "react";
+import { getQuizQuestions } from "../../services/quizzes.services";
 
 const QuizManager = () => {
   const [questions, setQuestions] = useState([]);
-  const [newQuestion, setNewQuestion] = useState('');
+  const [newQuestion, setNewQuestion] = useState("");
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -22,8 +21,11 @@ const QuizManager = () => {
 
   const handleAddQuestion = () => {
     if (newQuestion) {
-      setQuestions((prevQuestions) =>[...prevQuestions, { question: newQuestion }] );
-      setNewQuestion('');
+      setQuestions((prevQuestions) => [
+        ...prevQuestions,
+        { question: newQuestion },
+      ]);
+      setNewQuestion("");
     }
   };
 
@@ -33,9 +35,10 @@ const QuizManager = () => {
         {questions.map((question, index) => (
           <div key={index} className="p-4 mb-2 border rounded">
             <p>{question.question}</p>
-            <button 
+            <button
               onClick={() => handleDeleteQuestion(index)}
-              className="btn btn-error btn-sm">
+              className="btn btn-error btn-sm"
+            >
               Delete Question
             </button>
           </div>
@@ -49,9 +52,7 @@ const QuizManager = () => {
           placeholder="Enter new question"
           className="input input-bordered w-full max-w-xs"
         />
-        <button 
-          onClick={handleAddQuestion}
-          className="btn btn-primary ml-2">
+        <button onClick={handleAddQuestion} className="btn btn-primary ml-2">
           Add Question
         </button>
       </div>
