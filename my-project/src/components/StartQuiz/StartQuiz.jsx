@@ -31,8 +31,6 @@ const StartQuiz = () => {
   };
 
   const question = quiz.questions[currentQuestionIndex];
-  console.log(question);
-  console.log(quiz);
   const currentAnswer = userAnswers[currentQuestionIndex];
 
   const decodeHtml = (html) => {
@@ -66,17 +64,17 @@ const StartQuiz = () => {
               className="btn btn-primary bg-blue-400"
               onClick={handlePreviousQuestion}
               disabled={currentQuestionIndex === 0}
+              style={{ border: "none" }}
             >
               Previous Question
             </button>
-            <div className="card-actions justify-end mt-4">
-              <button
-                className="btn btn-primary bg-blue-400"
-                onClick={handleNextQuestion}
-              >
-                Next Question
-              </button>
-            </div>
+            <button
+              className="btn btn-primary bg-blue-400"
+              onClick={handleNextQuestion}
+              style={{ border: "none" }}
+            >
+              Next Question
+            </button>
           </div>
         </div>
       </div>
