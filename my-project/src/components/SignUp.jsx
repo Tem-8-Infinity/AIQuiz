@@ -191,27 +191,29 @@ const SignUp = () => {
                 <span className="label-text">Role</span>
               </label>
               <div className="flex gap-x-12">
-              <div>
-                <button
-                  type="button"
-                  className={`btn ${
-                    formik.values.role === "participant" ? "btn-active" : ""
-                  }`}
-                  onClick={() => formik.setFieldValue("role", "participant")}
-                >
-                  Participant
-                </button>
-                <button
-                  type="button"
-                  className={`btn ${
-                    formik.values.role === "creator" ? "btn-active" : ""
-                  }`}
-                  onClick={() => formik.setFieldValue("role", "creator")}
-                >
-                  Creator
-                </button>
+                <div>
+                  <button
+                    type="button"
+                    className={`btn ${
+                      formik.values.role === "participant" ? "btn-active" : ""
+                    }`}
+                    onClick={() => formik.setFieldValue("role", "participant")}
+                  >
+                    Participant
+                  </button>
+                  <button
+                    type="button"
+                    className={`btn ${
+                      formik.values.role === "creator" ? "btn-active" : ""
+                    }`}
+                    onClick={() => formik.setFieldValue("role", "creator")}
+                  >
+                    Creator
+                  </button>
                 </div>
-                <a className="btn btn-link " href="./LogIn">Log In</a>
+                <a className="btn btn-link " href="./LogIn">
+                  Log In
+                </a>
               </div>
               {formik.touched.role && formik.errors.role && (
                 <p className="text-red-500">{formik.errors.role}</p>
@@ -220,7 +222,11 @@ const SignUp = () => {
 
             {/* Submit Button */}
             <div className="form-control mt-6">
-              <button type="submit" className="btn bg-blue-400"style={{ border: "none", padding: "3%" }}>
+              <button
+                type="submit"
+                className="btn bg-blue-400"
+                style={{ border: "none", padding: "3%" }}
+              >
                 Register
               </button>
             </div>
