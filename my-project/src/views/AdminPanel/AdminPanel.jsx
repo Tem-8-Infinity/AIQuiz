@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { blockUser, searchUser } from "../../services/admin.services";
+import { toast } from "react-toastify";
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
@@ -9,8 +10,21 @@ const AdminPanel = () => {
   const [usersPerPage] = useState(10);
 
   useEffect(() => {
-    searchUser("").then(setUsers);
-  }, [setUsers]);
+    const fetchData = async () => {
+      try {
+        const fetchedUsers = await searchUser(
+          searchTerm, 
+          (currentPage - 1) * usersPerPage, 
+          usersPerPage
+        );
+        setUsers(fetchedUsers);
+      } catch (error) {
+        toast.error("Error fetching users:");
+      }
+    };
+
+    fetchData();
+  }, [currentPage, usersPerPage, searchTerm]);
 
   const handleBlockUser = (uid, blockStatus) => {
     const newBlockStatus = !blockStatus;
@@ -29,43 +43,35 @@ const AdminPanel = () => {
     });
   };
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const indexOfLastUser = currentPage * usersPerPage;
-  const indexOfFirstUser = indexOfLastUser - usersPerPage;
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <>
-      {filteredUsers && (
+      {users && (
         <div className="p-4 m-2 md:m-10 border shadow-md rounded bg-gradient-to-br from-amber-200 to-teal-200 font-bold">
           <div className="card-body">
             <input
               type="text"
-              className="input input-bordered w-full max-w-xs placeholder-teal-300"
+              className="input__dark input input-bordered text-black w-full max-w-xs placeholder-teal-300"
               placeholder="Search for user"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
             />
             <div className="overflow-x-auto mt-4">
               <table className="table w-full">
                 <thead>
-                  <tr>
+                  <tr className="text__card text-2xl text-black">
                     <th>Username</th>
                     <th>Email</th>
                     <th>Role</th>
                     <th>Block/Unblock</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {filteredUsers.map((user) => (
+                <tbody className="text__card">
+                  {users.map((user) => (
                     <tr key={user.username}>
                       <td>{user.username}</td>
                       <td>{user.email}</td>
@@ -89,24 +95,17 @@ const AdminPanel = () => {
               <div className="card-actions justify-end p-20">
                 <button
                   className="btn btn-ghost text-white bg-violet-600 font-bold border-none"
-                  onClick={() =>
-                    paginate(currentPage > 1 ? currentPage - 1 : currentPage)
-                  }
+                  disabled={currentPage <= 1}
+                  onClick={() => paginate(currentPage - 1)}
                 >
                   Previous
                 </button>
-                <span>
-                  Page {currentPage} of {Math.ceil(users.length / usersPerPage)}
+                <span className="text__card">
+                  Page {currentPage}
                 </span>
                 <button
                   className="btn btn-ghost text-white bg-violet-600 font-bold border-none"
-                  onClick={() =>
-                    paginate(
-                      currentPage < Math.ceil(users.length / usersPerPage)
-                        ? currentPage + 1
-                        : currentPage
-                    )
-                  }
+                  onClick={() => paginate(currentPage + 1)}
                 >
                   Next
                 </button>
