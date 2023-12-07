@@ -17,7 +17,6 @@ const LogIn = () => {
     e.preventDefault();
     try {
       if (await isUserBlocked(email)) {
-        debugger;
         throw new Error();
       }
       await signInWithEmailAndPassword(auth, email, password);
