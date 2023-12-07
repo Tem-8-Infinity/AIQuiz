@@ -8,7 +8,7 @@ const DisplayQuestionnaire = () => {
   const navigate = useNavigate();
   const [questionnaires, setQuestionnaires] = useState([]);
   useEffect(() => {
-    const dataRef = ref(db, `quizzes/${quizId}`);
+    const dataRef = ref(db, `quizzesTest/${quizId}`);
     get(dataRef).then((snapshot) => {
       if (snapshot.exists()) {
         console.log(snapshot.val());
