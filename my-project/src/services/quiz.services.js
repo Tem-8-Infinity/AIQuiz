@@ -53,16 +53,13 @@ export const getAllQuizzesNoFilter = async () => {
   }
 };
 
-export const createQuiz = async (createdBy, isPrivate, quizCategory, quizDifficulty, quizDuration, quizName) => {
-  const quizRef = push(ref(db, '/quizzes'));
+export const createQuiz = async (createdBy, quiz) => {
+  const quizRef = push(ref(db, '/quizzesTest'));
   await set((quizRef), {
     createdBy,
-    isPrivate,
-    quizCategory,
-    quizDifficulty,
-    quizDuration,
-    quizName,
-    questions: []
+    ...quiz,
+    questions: [],
+    results: [],
   });
   console.log(quizRef.key);
   return await quizRef.key;

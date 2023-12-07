@@ -13,3 +13,7 @@ export const basicSchema = yup.object().shape({
     confirmPassword: yup.string().oneOf([yup.ref("password"), null], "Passwords must match"),
     role: yup.string().oneOf(['participant', 'creator'], 'Invalid role').required("Role is required"),
 })
+
+export const quizSchema = yup.object().shape({
+    
+})
