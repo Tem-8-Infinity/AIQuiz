@@ -8,13 +8,12 @@ const DisplayQuestionnaire = () => {
   const navigate = useNavigate();
   const [questionnaires, setQuestionnaires] = useState([]);
   useEffect(() => {
-    const dataRef = ref(db, "questionnaire");
-    const queryRef = query(dataRef, orderByChild("quizId"), equalTo(quizId));
-    get(queryRef).then((snapshot) => {
+    const dataRef = ref(db, `quizzes/${quizId}`);
+    get(dataRef).then((snapshot) => {
       if (snapshot.exists()) {
         console.log(snapshot.val());
         let data = [];
-        for (const [key, value] of Object.entries(snapshot.val())) {
+        for (const [key, value] of Object.entries(snapshot.val().questions)) {
           data.push(value);
         }
         setQuestionnaires(data);
@@ -25,29 +24,22 @@ const DisplayQuestionnaire = () => {
   return (
     <>
     <div>DisplayQuestionnaire</div>
-
+    {questionnaires.length === 0 && (
+      <div className=" m-5 p-3 text-center text-3xl font-bold saturate-200 tracking-wide ">
+        Add your first question !
+      </div>
+    )}
     <ul>
-      <li className='card shadow-xl rounded-md m-5 hover:shadow-none transition-shadow duration-500'>
-        <div className='flex flex-row gap-5 card-body font-bold text-lg'>
-          <div>1.</div>
-          Question one Question oneQuestion oneQuestion one ?
-        </div>
-      </li>
-      <li className='card shadow-xl rounded-md m-5 hover:shadow-none transition-shadow duration-500'>
-        <div className='flex flex-row gap-5 card-body font-bold text-lg'>
-          <div>1.</div>
-          Question one Question oneQuestion oneQuestion one ?
-        </div>
-      </li>
-      <li className='card shadow-xl rounded-md m-5 hover:shadow-none transition-shadow duration-500'>
-        <div className='flex flex-row gap-5 card-body font-bold text-lg'>
-          <div>1.</div>
-          Question one Question oneQuestion oneQuestion one ?
-        </div>
-      </li>
+      {questionnaires.map((q,id)=>(
+        <li key={id} className='card shadow-xl rounded-md m-5 hover:shadow-none transition-shadow duration-500'>
+          <div className='flex flex-row gap-5 card-body font-bold text-lg'>
+          <div>{id+1}.</div>{/*Count mechanism */}
+          <div>{q.question}</div>
+          </div>
+         </li>
+         ))}
         
       
-      {questionnaires.map((q,id)=>(<li key={id}>{q.question}</li>))}
     </ul>
     <button className="btn btn-primary ml-5" onClick={()=>{
       navigate(`/CreateQuestionnaire/${quizId}`)

@@ -15,6 +15,7 @@ const CreateQuiz = () => {
     title: "",
     timer: "",
     isPrivate: false,
+    type: "",//Open or Private
   });
 
   const navigate = useNavigate();
@@ -99,7 +100,7 @@ const CreateQuiz = () => {
           <div>
             <label>Start Date :</label>
             <input
-              value={quizDetails.timer}
+              value={quizDetails.startDate}
               onChange={handleInputChange}
               name="startDate"
               type="date"
@@ -110,7 +111,7 @@ const CreateQuiz = () => {
           <div>
             <label>End Date :</label>
             <input
-              value={quizDetails.timer}
+              value={quizDetails.endDate}
               onChange={handleInputChange}
               name="endDate"
               type="date"

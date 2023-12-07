@@ -59,7 +59,7 @@ const DisplayQuizes = () => {
             <p>Duration: {quiz.duration}</p>
             <p>End Date: {new Date(quiz.endDate).toLocaleString()}</p>
             <button
-              disabled={quiz?.results.some((r) => r.userID === user.uid)}
+              disabled={quiz?.results ? quiz?.results.some((r) => r.userID === user.uid): false}  
               className={`btn border-none bg-blue-400 w-28 mx-auto ${
                 completedQuizzes.includes(quiz.id)
                   ? "opacity-50 cursor-not-allowed"
