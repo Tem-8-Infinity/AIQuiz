@@ -7,6 +7,7 @@ const CategoryCard = ({ category }) => {
   const selectCategoryHandler = () => {
     navigate(`/DisplayQuizes`, { state: { category } });
   };
+  
   return (
       <div 
       onClick={() => selectCategoryHandler()}
