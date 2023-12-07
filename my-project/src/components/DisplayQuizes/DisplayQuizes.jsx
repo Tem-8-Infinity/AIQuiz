@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getAllQuizzes } from "../../services/quiz.services";
 import { getCompletedQuizzes } from "../../services/user.services";
 
+
 const DisplayQuizes = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [completedQuizzes, setCompletedQuizzes] = useState([]);
@@ -41,10 +42,10 @@ const DisplayQuizes = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2 font-bold">
       {quizzes.map((quiz, index) => (
-        <div key={index} className="card bg-neutral text-neutral-content">
-          <div className="card-body">
+        <div key={index} className="card bg-border shadow-md rounded bg-gradient-to-br from-amber-200 to-teal-300 text-black font-bold">
+          <div className="card-body text-black">
             <h2 className="card-title">
               {quiz.quizName}
               <div
@@ -60,7 +61,7 @@ const DisplayQuizes = () => {
             <p>End Date: {new Date(quiz.endDate).toLocaleString()}</p>
             <button
               disabled={quiz?.results.some((r) => r.userID === user.uid)}
-              className={`btn border-none bg-blue-400 w-28 mx-auto ${
+              className={`btn border-none bg-blue-400 w-28 mx-auto font-bold text-black${
                 completedQuizzes.includes(quiz.id)
                   ? "opacity-50 cursor-not-allowed"
                   : ""

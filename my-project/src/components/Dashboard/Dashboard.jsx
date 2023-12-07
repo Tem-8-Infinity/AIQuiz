@@ -21,7 +21,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 border shadow-md rounded bg-gradient-to-br from-violet-400 to-teal-200 font-bold">
       <div className="flex">
         <h2 className="text-2xl font-bold mb-4">{quiz?.quizName}</h2>
         <div
@@ -54,7 +54,7 @@ const Dashboard = () => {
           </tbody>
         </table>
       </div>
-      <button className="btn btn-primary" onClick={beginQuiz}>
+      <button className="btn btn-primary text-white bg-violet-600 border-none" onClick={beginQuiz}>
         Begin Quiz
       </button>
     </div>

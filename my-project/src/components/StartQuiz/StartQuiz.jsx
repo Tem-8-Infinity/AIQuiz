@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const StartQuiz = () => {
   const { state } = useLocation();
@@ -17,7 +18,7 @@ const StartQuiz = () => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
       if (Object.keys(userAnswers).length < quiz.questions.length) {
-        alert("Please answer all questions before proceeding.");
+        toast.error("Please answer all questions before proceeding.");
         return;
       }
       navigate("/QuizResults", { state: { quiz, userAnswers } });

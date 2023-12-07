@@ -24,7 +24,7 @@ const NavBar = () => {
     <div className="navbar bg-gray-700">
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost text-xl text-white">
-          Team 8 Infinity
+          AIQuiz
         </Link>
       </div>
       <div className="flex-none gap-2">
@@ -51,6 +51,13 @@ const NavBar = () => {
                   tabIndex={0}
                   className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
                 >
+                  {user?.admin && (
+                    <li>
+                      <Link to={"/AdminPanel"} className="justify-between">
+                        Admin Panel
+                      </Link>
+                    </li>
+                  )}
                   <li>
                     <Link to={"/Profile"} className="justify-between">
                       Profile

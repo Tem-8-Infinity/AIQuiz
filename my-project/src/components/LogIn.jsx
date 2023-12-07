@@ -4,6 +4,7 @@ import { auth } from "../config/firebase-config";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../context/store";
 import { toast } from "react-toastify";
+import { isUserBlocked } from "../services/user.services";
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
@@ -15,6 +16,9 @@ const LogIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (isUserBlocked(email)) {
+        throw new Error();
+      }
       await signInWithEmailAndPassword(auth, email, password);
       toast.success("Logged in Successfully");
       navigate("/");
