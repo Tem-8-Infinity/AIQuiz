@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getAllQuizzes } from "../../services/quiz.services";
 import { getCompletedQuizzes } from "../../services/user.services";
 
+
 const DisplayQuizes = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [completedQuizzes, setCompletedQuizzes] = useState([]);
@@ -41,10 +42,10 @@ const DisplayQuizes = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2 font-bold">
       {quizzes.map((quiz, index) => (
-        <div key={index} className="card bg-neutral text-neutral-content">
-          <div className="card-body">
+        <div key={index} className="card bg-border shadow-md rounded bg-gradient-to-br from-teal-400 to-teal-100 text-black font-bold">
+          <div className="card-body text-black">
             <h2 className="card-title">
               {quiz.quizName}
               <div

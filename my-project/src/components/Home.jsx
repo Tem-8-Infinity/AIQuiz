@@ -6,7 +6,7 @@ const Home = () => {
           src="https://picsum.photos/200/300"
           className="max-w-sm rounded-lg shadow-2xl"
         />
-        <div className="flex flex-col items-center justify-center ">
+        <div className="flex flex-col items-center justify-center font-bold ">
           <h1 className="text-5xl font-bold">Welcome to AIQuiz!</h1>
           <p className="py-6 text-8xs text-center">
             Unlock the world of knowledge and fun with AIQuiz, your go-to
@@ -17,7 +17,7 @@ const Home = () => {
           </p>
           <button
             onClick={() => (window.location.href = "/SignUp")}
-            className="btn btn-primary"
+            className="btn btn-primary font-bold"
           >
             Get Started
           </button>

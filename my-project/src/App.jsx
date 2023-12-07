@@ -13,6 +13,7 @@ import QuizResults from "./components/QuizResults/QuizResults";
 import useUserStore from "./context/store";
 import NavBar from "./components/NavBar";
 import Dashboard from "./components/Dashboard/Dashboard";
+import AdminPanel from "./views/AdminPanel/AdminPanel";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getUserData } from "./services/user.services";
 import { ToastContainer } from "react-toastify";
@@ -21,6 +22,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import PrivateHome from "./components/PrivateHome/PrivateHome";
 import CreateQuestionnaire from "./components/CreateQuestionnaire/CreateQuestionnaire";
 import DisplayQuestionnaire from "./components/DisplayQuestionnaire/DisplayQuestionnaire";
+
 
 function App() {
   const { user, setUser } = useUserStore();
@@ -47,6 +49,14 @@ function App() {
         <Route path="/" element={firebaseUser ? <PrivateHome /> : <Home />} />
         <Route path="/LogIn" element={<LogIn />} />
         <Route path="/SignUp" element={<SignUp />} />
+        <Route
+          path="/AdminPanel"
+          element={
+            <AuthenticatedRoute>
+              <AdminPanel />
+            </AuthenticatedRoute>
+          }
+        />
         <Route
           path="/Profile"
           element={

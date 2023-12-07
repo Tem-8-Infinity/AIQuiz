@@ -36,6 +36,11 @@ export const getUserByHandle = async (handle) => {
   }
 };
 
+export const isUserBlocked = async (email) => {
+  const users = (await get(ref(db, `users`))).val();
+  return Object.values(users).some(u => u.email === email && u.isBlocked);
+}
+
 export const getUserNameByUserId = async (userId) => {
   try {
     const data = await get(ref(db, `users/${userId}/username`));
@@ -62,7 +67,9 @@ export const createUser = async (firstName, lastName, username, email, phoneNumb
       phoneNumber,
       role,
       uid,
-      avatarURL: ""
+      avatarURL: "",
+      admin: false,
+      isBlocked: false
     };
     await set(ref(db, `users/${uid}`), userObj);
   } catch (error) {
