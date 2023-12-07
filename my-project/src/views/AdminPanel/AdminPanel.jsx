@@ -86,9 +86,9 @@ const AdminPanel = () => {
                   ))}
                 </tbody>
               </table>
-              <div className="card-actions justify-end">
+              <div className="card-actions justify-end p-20">
                 <button
-                  className="btn btn-primary bg-violet-600 font-bold border-none"
+                  className="btn btn-ghost text-white bg-violet-600 font-bold border-none"
                   onClick={() =>
                     paginate(currentPage > 1 ? currentPage - 1 : currentPage)
                   }
@@ -99,7 +99,7 @@ const AdminPanel = () => {
                   Page {currentPage} of {Math.ceil(users.length / usersPerPage)}
                 </span>
                 <button
-                  className="btn btn-primary bg-violet-600 font-bold border-none"
+                  className="btn btn-ghost text-white bg-violet-600 font-bold border-none"
                   onClick={() =>
                     paginate(
                       currentPage < Math.ceil(users.length / usersPerPage)

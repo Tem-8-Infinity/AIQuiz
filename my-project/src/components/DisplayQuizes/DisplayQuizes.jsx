@@ -44,7 +44,7 @@ const DisplayQuizes = () => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2 font-bold">
       {quizzes.map((quiz, index) => (
-        <div key={index} className="card bg-border shadow-md rounded bg-gradient-to-br from-amber-200 to-teal-300 text-black font-bold">
+        <div key={index} className="card bg-border shadow-md rounded bg-gradient-to-br from-teal-400 to-teal-100 text-black font-bold">
           <div className="card-body text-black">
             <h2 className="card-title">
               {quiz.quizName}

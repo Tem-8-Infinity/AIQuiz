@@ -16,7 +16,8 @@ const LogIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (isUserBlocked(email)) {
+      if (await isUserBlocked(email)) {
+        debugger;
         throw new Error();
       }
       await signInWithEmailAndPassword(auth, email, password);
