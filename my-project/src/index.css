@@ -25,3 +25,7 @@ input[type=number]::-webkit-inner-spin-button {
 [data-theme="dark"] .input__dark {
   background-color: white;
 }
+
+[data-theme="dark"] .text__card {
+  color: black;;
+}
