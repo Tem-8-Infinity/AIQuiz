@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
+// import {useAuthState} from "react-firebase-hooks";
 import { createQuiz } from "../../services/quiz.services";
 import {
   Routes,
@@ -9,8 +10,11 @@ import {
 } from "react-router-dom";
 import { useFormik } from "formik";
 import { auth } from "../../config/firebase-config";
+import useUserStore from "../../context/store";
 
 const CreateQuiz = () => {
+  // const [user,loading, error] = useAuthState(auth);
+  const user = useUserStore((state) => state.user);
   const [quizDetails, setQuizDetails] = useState({
     category: "Categories",
     title: "",
@@ -40,8 +44,9 @@ const CreateQuiz = () => {
     // Implement the logic to create a quiz using quizDetails
     ev.preventDefault();
     console.log("Quiz Created:", quizDetails);
+    console.log(user);
     const key = await createQuiz(
-      auth.currentUser.displayName,
+      user.username,
       quizDetails,
       ); //createdBy,isPrivate,quizCategory,quizDifficulty, quizDuration, quizName
     navigate(`/DisplayQuestionnaire/${key}`);

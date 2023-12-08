@@ -58,6 +58,7 @@ export const createQuiz = async (createdBy, quiz) => {
   await set((quizRef), {
     createdBy,
     ...quiz,
+    createdOn: Date.now(),
     questions: [],
     results: [],
   });
