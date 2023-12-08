@@ -9,7 +9,6 @@ export const searchUser = (searchTerm, startIndex = 0, usersPerPage = 10) => {
       }
 
       const users = snapshot.val();
-      // Convert object to array and apply filtering based on searchTerm
       let filteredUsers = Object.keys(users)
         .map((key) => users[key])
         .filter(user => 
@@ -19,10 +18,15 @@ export const searchUser = (searchTerm, startIndex = 0, usersPerPage = 10) => {
           user.lastName.includes(searchTerm)
         );
 
-      // Apply Pagination
       const paginatedUsers = filteredUsers.slice(startIndex, startIndex + usersPerPage);
       return paginatedUsers;
     });
+};
+
+export const updateUserRole = (uid, newRole) => {
+  return update(ref(db, `users/${uid}`), {
+    role: newRole,
+  });
 };
 
 export const blockUser = (uid, blockStatus) => {

@@ -1,35 +1,50 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const StartQuiz = () => {
   const { state } = useLocation();
-  const { quiz } = state;
+  const quiz = state.quiz;
+
+  const maxDurationInMinutes = parseInt(quiz.maxDuration, 10);
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [secondsLeft, changeSecondsLeft] = useState(0);
-  const [minutesLeft, changeMinutesLeft] = useState(quiz.maxDuration);
+  const [secondsLeft, setSecondsLeft] = useState(0);
+  const [minutesLeft, setMinutesLeft] = useState(maxDurationInMinutes);
   const [userAnswers, setUserAnswers] = useState({});
-  const [isRunning, setIsRunning] = useState(null);
+  const [isRunning, setIsRunning] = useState(true);
   const navigate = useNavigate();
   let timer;
 
   useEffect(() => {
     if (isRunning) {
       timer = setInterval(() => {
-        if (secondsLeft === 0) {
-          changeMinutesLeft((minutesLeft) => minutesLeft - 1);
-          changeSecondsLeft(59);
+        if (minutesLeft === 0 && secondsLeft === 0) {
+          clearInterval(timer);
+          finishQuiz();
+          return;
         }
-        changeSecondsLeft((secondsLeft) => secondsLeft - 1);
+
+        if (secondsLeft === 0) {
+          setMinutesLeft(minutesLeft => minutesLeft - 1);
+          setSecondsLeft(59);
+        } else {
+          setSecondsLeft(secondsLeft => secondsLeft - 1);
+        }
       }, 1000);
     }
 
     return () => clearInterval(timer);
   }, [secondsLeft, minutesLeft, isRunning]);
 
-  useEffect(() => {
-    setIsRunning(() => true);
-  });
+  const finishQuiz = () => {
+    const totalTimeSpent = (maxDurationInMinutes * 60) - (minutesLeft * 60 + secondsLeft);
+    const timeTakenMinutes = Math.floor(totalTimeSpent / 60);
+    const timeTakenSeconds = totalTimeSpent % 60;
+    const formattedTimeTaken = `${timeTakenMinutes.toString().padStart(2, '0')}:${timeTakenSeconds.toString().padStart(2, '0')}`;
+
+    navigate("/QuizResults", { state: { quiz, userAnswers, timeTaken: formattedTimeTaken } });
+  };
 
   const handleAnswer = (answer) => {
     setUserAnswers((prev) => ({ ...prev, [currentQuestionIndex]: answer }));
@@ -38,12 +53,10 @@ const StartQuiz = () => {
   const handleNextQuestion = () => {
     if (currentQuestionIndex < quiz.questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else if (Object.keys(userAnswers).length < quiz.questions.length) {
+      toast.error("All questions must be answered.");
     } else {
-      if (Object.keys(userAnswers).length < quiz.questions.length) {
-        toast.error("Please answer all questions before proceeding.");
-        return;
-      }
-      navigate("/QuizResults", { state: { quiz, userAnswers } });
+      finishQuiz();
     }
   };
 
@@ -110,7 +123,9 @@ const StartQuiz = () => {
               onClick={handleNextQuestion}
               style={{ border: "none" }}
             >
-              Next Question
+              {currentQuestionIndex === quiz.questions.length - 1
+                ? "Finish Quiz"
+                : "Next Question"}
             </button>
           </div>
         </div>

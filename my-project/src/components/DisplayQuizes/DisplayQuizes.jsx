@@ -18,7 +18,7 @@ const DisplayQuizes = () => {
     if (user) {
       // Fetches completed quizzes for the user
       getCompletedQuizzes(user.uid).then(setCompletedQuizzes);
-      // Fetches all quizzes
+      // All quizzes fetch
       getAllQuizzes().then((data) => {
         const filteredQuizzes = category
           ? data.filter(
@@ -57,11 +57,12 @@ const DisplayQuizes = () => {
             </h2>
             <p>Created by: {quiz.createdBy}</p>
             <p>Category: {quiz.quizCategory}</p>
-            <p>Duration: {quiz.duration}</p>
+            <p>Duration: {quiz.maxDuration} minutes</p>
+            <p>Total points: {quiz.maximumPoints} points</p>
             <p>End Date: {new Date(quiz.endDate).toLocaleString()}</p>
             <button
               disabled={quiz?.results ? quiz?.results.some((r) => r.userID === user.uid): false}  
-              className={`btn border-none bg-blue-400 w-28 mx-auto ${
+              className={`btn border-none bg-blue-400 w-28 mx-auto text-black font-bold${
                 completedQuizzes.includes(quiz.id)
                   ? "opacity-50 cursor-not-allowed"
                   : ""

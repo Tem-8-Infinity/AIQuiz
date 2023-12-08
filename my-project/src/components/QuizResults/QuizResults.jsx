@@ -13,7 +13,7 @@ import {
 
 const QuizResults = () => {
   const { state } = useLocation();
-  const { quiz, userAnswers } = state;
+  const { quiz, userAnswers, timeTaken } = state;
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
   let correctAnswersCount = 0;
@@ -26,14 +26,12 @@ const QuizResults = () => {
     }
   });
 
-  // Calculate the points and success rate
   const totalPoints = quiz.questions.reduce(
     (sum, question) => sum + (question.points || 0),
     0
   );
   const successRate = (correctAnswersCount / quiz.questions.length) * 100;
 
-  // Save results and mark quiz as completed
   useEffect(() => {
     if (user) {
       storeQuizResult(user.uid, quiz.id, points);
@@ -42,7 +40,7 @@ const QuizResults = () => {
       getUserNameByUserId(user.uid).then((username) => {
         const score = {
           score: points,
-          timeTaken: 80,
+          timeTaken,
           userID: user.uid,
           username,
         };
@@ -50,14 +48,14 @@ const QuizResults = () => {
         storeDataInResult(quiz.id, score);
       });
     }
-  }, [user, quiz.id, points]);
+  }, [user, quiz.id, points, timeTaken]);
 
   const handleGoBack = () => {
     navigate("/");
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 font-bold">
       {quiz.questions.map((question, index) => (
         <div key={index} className="mb-4">
           <p>{question.question}</p>
@@ -70,7 +68,7 @@ const QuizResults = () => {
             Your Answer: {userAnswers[index]}
             {userAnswers[index] !== question.correctAnswer && (
               <span
-                className="ml-2 text-blue-600 hover:text-blue-800 cursor-pointer"
+                className="ml-2 text-black hover:text-black cursor-pointer font-bold"
                 title={question.correctAnswer}
               >
                 Hover to see the correct answer
@@ -80,11 +78,15 @@ const QuizResults = () => {
         </div>
       ))}
       <div className="mt-6">
+        <p>Time Taken: {timeTaken}</p>
         <p>
           Total Points: {points} out of {totalPoints}
         </p>
         <p>Success Rate: {successRate.toFixed(2)}%</p>
-        <button className="btn btn-primary mt-4" onClick={handleGoBack}>
+        <button
+          className="btn btn-primary mt-4 font-bold"
+          onClick={handleGoBack}
+        >
           Go Back to Quizzes
         </button>
       </div>

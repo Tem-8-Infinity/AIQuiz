@@ -18,7 +18,7 @@ const NavBar = () => {
     try {
       logoutUser();
       setUser(null);
-      navigate("/"); // Navigate to home page
+      navigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -37,7 +37,7 @@ const NavBar = () => {
     const localTheme = localStorage.getItem("theme");
     document.querySelector("html").setAttribute("data-theme", localTheme);
   }, [theme]);
-  console.log(user, firebaseUser);
+
   return (
     <div className="navbar bg-gray-700">
       <div className="flex-1">
@@ -79,7 +79,7 @@ const NavBar = () => {
               <div className="form-control">
                 <input
                   type="text"
-                  placeholder="Search"          
+                  placeholder="Search"
                   className="input input-bordered"
                 />
               </div>
@@ -96,21 +96,36 @@ const NavBar = () => {
                   tabIndex={0}
                   className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
                 >
-                  {user?.admin && (
+                  {user?.role === "educator" && (
+                    <li>
+                      <Link to={"/EducatorPanel"} className="justify-between">
+                        Educator Panel
+                      </Link>
+
+                      <Link to={"/createQuiz"} className="justify-between">
+                        Create Quiz
+                      </Link>
+                    </li>
+                  )}
+                  {user?.role === "admin" && (
                     <li>
                       <Link to={"/AdminPanel"} className="justify-between">
                         Admin Panel
                       </Link>
+
+                      <Link to={"/EducatorPanel"} className="justify-between">
+                        Educator Panel
+                      </Link>
+
+                      <Link to={"/createQuiz"} className="justify-between">
+                        Create Quiz
+                      </Link>
+
                     </li>
                   )}
                   <li>
                     <Link to={"/Profile"} className="justify-between">
                       Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={"/createQuiz"} className="justify-between">
-                      Create Quiz
                     </Link>
                   </li>
                   <li>

@@ -12,9 +12,10 @@ import {
   push
 } from "firebase/database";
 import { db } from "../config/firebase-config";
+import { toast } from "react-toastify";
 
 export const getAllQuizzes = async () => {
-  const snapshot = await get(query(ref(db, '/quizzes'))); // Ensure correct path to quizzes
+  const snapshot = await get(query(ref(db, '/quizzes')));
   if (snapshot.exists()) {
     const keys = Object.keys(snapshot.val())
     return Object.values(snapshot.val()).map((quiz, index) => ({
@@ -48,7 +49,7 @@ export const getAllQuizzesNoFilter = async () => {
       return [];
     }
   } catch (error) {
-    console.error('Error fetching quizzes:', error);
+    toast.error('Error fetching quizzes:', error);
     throw error;
   }
 };
@@ -65,22 +66,29 @@ export const createQuiz = async (createdBy, quiz) => {
   return await quizRef.key;
 };
 
-// Store the results of a quiz for a user
 export const storeQuizResult = async (uid, quizId, score) => {
   const quizResultsRef = ref(db, `quizResults/${quizId}/${uid}`);
   await set(quizResultsRef, { score });
 };
 
 export const storeDataInResult = async (quizId, score) => {
-  debugger;
-  const resultsRef = ref(db, `quizzes/${quizId}/results`)
-  const resultsSnapshot = await get(query(resultsRef));
-  const results = resultsSnapshot.val();
-  results.push(score)
-  await set(resultsRef, results)
+  try {
+    const resultsRef = ref(db, `quizzes/${quizId}/results`);
+    const resultsSnapshot = await get(query(resultsRef));
+    let results = resultsSnapshot.val();
+
+    if (!results) {
+      results = [];
+    }
+
+    results.push(score);
+    await set(resultsRef, results);
+  } catch (error) {
+    toast.error('Error storing data in result:');
+    throw error;
+  }
 };
 
-// Retrieve the top performers for a quiz
 export const getTopPerformers = async (quizId) => {
   const quizResultsRef = ref(db, `quizResults/${quizId}`);
   const snapshot = await get(quizResultsRef);
@@ -91,7 +99,6 @@ export const getTopPerformers = async (quizId) => {
       let score = childSnapshot.val().score;
       results.push({ userId, score });
     });
-    // Sort and get the top 3 performers
     results.sort((a, b) => b.score - a.score);
     return results.slice(0, 3);
   }
