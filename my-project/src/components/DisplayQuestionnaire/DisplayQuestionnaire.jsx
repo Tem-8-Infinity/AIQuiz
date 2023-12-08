@@ -23,7 +23,6 @@ const DisplayQuestionnaire = () => {
   }, []);
   return (
     <>
-    <div>DisplayQuestionnaire</div>
     {questionnaires.length === 0 && (
       <div className=" m-5 p-3 text-center text-3xl font-bold saturate-200 tracking-wide ">
         Add your first question !
