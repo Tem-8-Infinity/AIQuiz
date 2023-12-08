@@ -1,24 +1,28 @@
 import { get, ref, update } from "firebase/database";
 import { db } from "../config/firebase-config";
 
-export const searchUser = (searchTerm) => {
-  return get(ref(db, "users")).then((snapshot) => {
-    if (!snapshot.exists()) {
-      throw new Error(`User with searchTerm ${searchTerm} does not exist!`);
-    }
-    const users = snapshot.val();
-    const filteredUsers = Object
-      .keys(users)
-      .filter(
-        (key) =>
-          (users[key]?.username && users[key].username.includes(searchTerm)) ||
-          (users[key]?.email && users[key].email.includes(searchTerm)) ||
-          (users[key]?.firstName && users[key].firstName.includes(searchTerm)) ||
-          (users[key]?.lastName && users[key].lastName.includes(searchTerm))
-      )
-      .map((key) => users[key]);
-    return filteredUsers;
-  });
+export const searchUser = (searchTerm, startIndex = 0, usersPerPage = 10) => {
+  return get(ref(db, "users"))
+    .then((snapshot) => {
+      if (!snapshot.exists()) {
+        throw new Error("No users found.");
+      }
+
+      const users = snapshot.val();
+      // Convert object to array and apply filtering based on searchTerm
+      let filteredUsers = Object.keys(users)
+        .map((key) => users[key])
+        .filter(user => 
+          user.username.includes(searchTerm) ||
+          user.email.includes(searchTerm) ||
+          user.firstName.includes(searchTerm) ||
+          user.lastName.includes(searchTerm)
+        );
+
+      // Apply Pagination
+      const paginatedUsers = filteredUsers.slice(startIndex, startIndex + usersPerPage);
+      return paginatedUsers;
+    });
 };
 
 export const blockUser = (uid, blockStatus) => {

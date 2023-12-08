@@ -23,7 +23,7 @@ const DisplayQuizes = () => {
         const filteredQuizzes = category
           ? data.filter(
               (quiz) =>
-                quiz.quizCategory === category || category === "All Categories"
+                quiz.quizCategory === category || category === "All"
             )
           : data;
         setQuizzes(filteredQuizzes);
