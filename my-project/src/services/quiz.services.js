@@ -72,7 +72,7 @@ export const storeQuizResult = async (uid, quizId, score) => {
   await set(quizResultsRef, { score });
 };
 
-export const storeDataInResult = async (quizId, score) => {
+export const storeDataInResult = async (quizId, score, uid, timeTaken) => {
   try {
     const resultsRef = ref(db, `quizzes/${quizId}/results`);
     const resultsSnapshot = await get(query(resultsRef));
@@ -82,14 +82,18 @@ export const storeDataInResult = async (quizId, score) => {
       results = [];
     }
 
-    results.push(score);
-    await set(resultsRef, results);
+    // Checks if the authenticated user has completed the specific quiz
+    const hasCompleted = results.some(result => result.uid === uid);
+    if (!hasCompleted) {
+      // Stores the result, if the user hasn't completed the quiz
+      results.push({ score, userID: userId, timeTaken });
+      await set(resultsRef, results);
+    }
   } catch (error) {
-    toast.error('Error storing data in result:');
+    toast.error('Error storing data in result:', error.message);
     throw error;
   }
 };
-
 export const getTopPerformers = async (quizId) => {
   const quizResultsRef = ref(db, `quizResults/${quizId}`);
   const snapshot = await get(quizResultsRef);
