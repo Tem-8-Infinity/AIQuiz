@@ -8,7 +8,7 @@ const CreateQuestionnaire = () => {
     const [questionnaire,setQuestionnaire]= useState({
       correctAnswer:"",//the first one is true, should randomize
       incorrectAnswers:['','',''],
-      timer:0,
+      maxDuration:0,
       points:0,
     });
     const {quizId} = useParams();
@@ -31,6 +31,9 @@ const CreateQuestionnaire = () => {
           quizId,
         }  
         await push(questionnaireRef,data)
+        update(ref(db),{
+          [`quizzesTest/${quizId}/id`]:quizId
+        })
         navigate(`/DisplayQuestionnaire/${quizId}`)
       }}>
         <div className='flex '>
