@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
-import { blockUser, searchUser } from "../../services/admin.services";
+import React, { useState, useEffect } from "react";
+import {
+  blockUser,
+  searchUser,
+  updateUserRole,
+} from "../../services/admin.services";
 import { toast } from "react-toastify";
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [blockedUsers, setBlockedUsers] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
 
@@ -13,34 +16,45 @@ const AdminPanel = () => {
     const fetchData = async () => {
       try {
         const fetchedUsers = await searchUser(
-          searchTerm, 
-          (currentPage - 1) * usersPerPage, 
+          searchTerm,
+          (currentPage - 1) * usersPerPage,
           usersPerPage
         );
         setUsers(fetchedUsers);
       } catch (error) {
-        toast.error("Error fetching users:");
+        toast.error("Error fetching users: " + error.message);
       }
     };
 
     fetchData();
   }, [currentPage, usersPerPage, searchTerm]);
 
-  const handleBlockUser = (uid, blockStatus) => {
-    const newBlockStatus = !blockStatus;
-
-    setBlockedUsers((prevState) => ({
-      ...prevState,
-      [uid]: newBlockStatus,
-    }));
-
-    blockUser(uid, newBlockStatus).then(() => {
+  const handleBlockUser = async (uid, blockStatus) => {
+    try {
+      await blockUser(uid, !blockStatus);
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
-          user.uid === uid ? { ...user, isBlocked: newBlockStatus } : user
+          user.uid === uid ? { ...user, isBlocked: !blockStatus } : user
         )
       );
-    });
+      toast.success("User status updated successfully");
+    } catch (error) {
+      toast.error("Failed to update user status");
+    }
+  };
+
+  const handleChangeRole = async (uid, newRole) => {
+    try {
+      await updateUserRole(uid, newRole);
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.uid === uid ? { ...user, role: newRole } : user
+        )
+      );
+      toast.success("Role updated successfully");
+    } catch (error) {
+      toast.error("Failed to update role");
+    }
   };
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -75,7 +89,18 @@ const AdminPanel = () => {
                     <tr key={user.username}>
                       <td>{user.username}</td>
                       <td>{user.email}</td>
-                      <td>{user.role}</td>
+                      <td>
+                        <select
+                          value={user.role}
+                          onChange={(e) =>
+                            handleChangeRole(user.uid, e.target.value)
+                          }
+                        >
+                          <option value="teacher">Teacher</option>
+                          <option value="student">Student</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                      </td>
                       <td>
                         <button
                           className={`btn ${
@@ -100,9 +125,7 @@ const AdminPanel = () => {
                 >
                   Previous
                 </button>
-                <span className="text__card">
-                  Page {currentPage}
-                </span>
+                <span className="text__card">Page {currentPage}</span>
                 <button
                   className="btn btn-ghost text-white bg-violet-600 font-bold border-none"
                   onClick={() => paginate(currentPage + 1)}

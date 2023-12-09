@@ -27,5 +27,5 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 [data-theme="dark"] .text__card {
-  color: black;;
+  color: black;
 }

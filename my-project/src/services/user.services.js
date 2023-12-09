@@ -11,6 +11,7 @@ import {
   child
 } from "firebase/database";
 import { db } from "../config/firebase-config";
+import { toast } from "react-toastify";
 
 /**
  * Get a Firebase database reference to a user based on their username.
@@ -36,6 +37,26 @@ export const getUserByHandle = async (handle) => {
   }
 };
 
+{/*An example of how to update role in firebase*/}
+
+//export const getUserRoleLive = (uid, listener) => {
+  //try {
+    // const updatedRole = 
+    // return onValue(get(ref(db, `users/${uid}/role`), snapshot => {
+    //   if (!snapshot.exists()) {
+    //     return listener([])
+    //   } 
+    //   const role = snapshot.val();
+    //   console.log(role)
+    //   return listener(role)
+    // }))
+    //return updatedRole();
+  // } catch (error) {
+  //   toast.error("Error getting role");
+//}
+//};
+
+
 export const isUserBlocked = async (email) => {
   const users = (await get(ref(db, `users`))).val();
   return Object.values(users).some(u => u.email === email && u.isBlocked);
@@ -57,6 +78,13 @@ export const changeUserAvatar = async (img, uid) => {
   });
 };
 
+//for future role update from the Admin Panel
+export const changeRole = async (uid, role) => {
+  return update(ref(db), {
+    [`/users/${uid}/role`]: role
+  });
+};
+
 export const createUser = async (firstName, lastName, username, email, phoneNumber, uid, role) => {
   try {
     const userObj = {
@@ -68,12 +96,11 @@ export const createUser = async (firstName, lastName, username, email, phoneNumb
       role,
       uid,
       avatarURL: "",
-      admin: false,
       isBlocked: false
     };
     await set(ref(db, `users/${uid}`), userObj);
   } catch (error) {
-    console.error('Error creating user:', error);
+    toast.error('Error creating user:');
   }
 };
 
@@ -89,7 +116,7 @@ export const getUserData = async (uid) => {
       return null;
     }
   } catch (error) {
-    console.error('Error fetching user data:', error);
+    toast.error('Error fetching user data:');
     throw error;
   }
 };
@@ -98,13 +125,12 @@ export const updateUserData = async (uid, userData) => {
   try {
     await set(ref(db, `users/${uid}`), userData);
   } catch (error) {
-    console.error('Error updating user data:', error);
+    toast.error('Error updating user data:');
   }
 };
 
 export const addCompletedQuiz = async (uid, quizId) => {
   const completedQuizzesRef = ref(db, `completedQuizzes/${uid}`);
-  // This assumes you're storing an array of quizIds, you could also use a map or other structure
   const completedQuizzesSnapshot = await get(completedQuizzesRef);
   const completedQuizzes = completedQuizzesSnapshot.exists() ? completedQuizzesSnapshot.val() : [];
 
@@ -114,7 +140,6 @@ export const addCompletedQuiz = async (uid, quizId) => {
   }
 };
 
-// Retrieve completed quizzes for a user
 export const getCompletedQuizzes = async (uid) => {
   const completedQuizzesRef = ref(db, `completedQuizzes/${uid}`);
   const snapshot = await get(completedQuizzesRef);

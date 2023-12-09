@@ -98,7 +98,7 @@ const ProfilePage = () => {
     <div className="p-6  md:m-5 text-black bg-border shadow-md rounded bg-gradient-to-br from-amber-200 to-teal-300">
       <h1 className="text-2xl font-bold mb-4">Profile Page</h1>
       <div className="mb-4">
-        <label className="block mb-2 font-bold">First Name:</label>
+        <label className="block mb-2 font-bold text-2xl">First Name:</label>
         <input
           placeholder="New First Name..."
           type="text"
@@ -106,14 +106,14 @@ const ProfilePage = () => {
           onChange={(e) => setFirstName(e.target.value)}
           className="input__dark p-2 border rounded  w-full mb-2 md:w-96 placeholder-orange-300 "
         />
-        <label className="block mb-2 font-bold">Last Name:</label>
+        <label className="block mb-2 font-bold text-2xl">Last Name:</label>
         <input
           type="text"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           className="input__dark p-2 border rounded  w-full mb-2 md:w-96 placeholder-orange-300"
         />
-        <label className="block mb-2 font-bold">Email:</label>
+        <label className="block mb-2 font-bold text-2xl">Email:</label>
         <input
           type="email"
           value={email}
@@ -128,7 +128,7 @@ const ProfilePage = () => {
         </button>
       </div>
       <div className="mb-4">
-        <label className="block mb-2 font-bold">Avatar:</label>
+        <label className="block mb-2 font-bold text-2xl">Avatar:</label>
         <input
           type="file"
           onChange={handleAvatarChange}
@@ -142,8 +142,12 @@ const ProfilePage = () => {
           />
         )}
       </div>
+      <div className="mb-4 ">
+        <label className="block mb-2 font-bold text-4xl">Role:{user?.role}</label>
+        
+      </div>
       <div className="mb-4">
-        <label className="block mb-2 font-bold">New Password:</label>
+        <label className="block mb-2 font-bold text-2xl">New Password:</label>
         <input
           type="password"
           value={newPassword}

@@ -195,20 +195,20 @@ const SignUp = () => {
                   <button
                     type="button"
                     className={`btn ${
-                      formik.values.role === "participant" ? "btn-active" : ""
+                      formik.values.role === "student" ? "btn-active" : ""
                     }`}
-                    onClick={() => formik.setFieldValue("role", "participant")}
+                    onClick={() => formik.setFieldValue("role", "student")}
                   >
-                    Participant
+                    Student
                   </button>
                   <button
                     type="button"
                     className={`btn ${
-                      formik.values.role === "creator" ? "btn-active" : ""
+                      formik.values.role === "educator" ? "btn-active" : ""
                     }`}
-                    onClick={() => formik.setFieldValue("role", "creator")}
+                    onClick={() => formik.setFieldValue("role", "educator")}
                   >
-                    Creator
+                    Educator
                   </button>
                 </div>
                 <a className="btn btn-link " href="./LogIn">
