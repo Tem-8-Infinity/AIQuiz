@@ -29,3 +29,11 @@ input[type=number]::-webkit-inner-spin-button {
 [data-theme="dark"] .text__card {
   color: black;
 }
+
+[data-theme="dark"] .role__selected {
+  background-color: white;
+}
+
+/* [data-theme="light"] .cat__card {
+  background-color: black;
+} */

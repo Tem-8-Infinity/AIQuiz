@@ -91,6 +91,7 @@ const AdminPanel = () => {
                       <td>{user.email}</td>
                       <td>
                         <select
+                          className="role__selected"
                           value={user.role}
                           onChange={(e) =>
                             handleChangeRole(user.uid, e.target.value)

@@ -1,8 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../config/firebase-config";
+import { storeDataInResult } from "../../services/quiz.services";
+import {
+  addCompletedQuiz,
+  getUserNameByUserId,
+} from "../../services/user.services";
 
 const StartQuiz = () => {
+  const [user] = useAuthState(auth);
   const { state } = useLocation();
   const quiz = state.quiz;
 
@@ -26,10 +34,10 @@ const StartQuiz = () => {
         }
 
         if (secondsLeft === 0) {
-          setMinutesLeft(minutesLeft => minutesLeft - 1);
+          setMinutesLeft((minutesLeft) => minutesLeft - 1);
           setSecondsLeft(59);
         } else {
-          setSecondsLeft(secondsLeft => secondsLeft - 1);
+          setSecondsLeft((secondsLeft) => secondsLeft - 1);
         }
       }, 1000);
     }
@@ -37,13 +45,43 @@ const StartQuiz = () => {
     return () => clearInterval(timer);
   }, [secondsLeft, minutesLeft, isRunning]);
 
+  useEffect(() => {
+    setIsRunning(true);
+  }, []);
+
   const finishQuiz = () => {
-    const totalTimeSpent = (maxDurationInMinutes * 60) - (minutesLeft * 60 + secondsLeft);
+    const totalTimeSpent =
+      maxDurationInMinutes * 60 - (minutesLeft * 60 + secondsLeft);
     const timeTakenMinutes = Math.floor(totalTimeSpent / 60);
     const timeTakenSeconds = totalTimeSpent % 60;
-    const formattedTimeTaken = `${timeTakenMinutes.toString().padStart(2, '0')}:${timeTakenSeconds.toString().padStart(2, '0')}`;
+    const formattedTimeTaken = `${timeTakenMinutes
+      .toString()
+      .padStart(2, "0")}:${timeTakenSeconds.toString().padStart(2, "0")}`;
 
-    navigate("/QuizResults", { state: { quiz, userAnswers, timeTaken: formattedTimeTaken } });
+    let points = 0;
+
+    quiz.questions.forEach((question, index) => {
+      if (userAnswers[index] === question.correctAnswer) {
+        points += question.points;
+      }
+    });
+
+    addCompletedQuiz(user.uid, quiz.id);
+
+    getUserNameByUserId(user.uid).then((username) => {
+      const score = {
+        score: points,
+        timeTaken: formattedTimeTaken,
+        userID: user.uid,
+        username,
+      };
+
+      storeDataInResult(quiz.id, score);
+    });
+
+    navigate("/QuizResults", {
+      state: { quiz, userAnswers, timeTaken: formattedTimeTaken },
+    });
   };
 
   const handleAnswer = (answer) => {

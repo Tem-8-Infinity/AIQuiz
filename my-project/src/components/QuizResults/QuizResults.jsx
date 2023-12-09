@@ -1,21 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../config/firebase-config";
-import {
-  storeDataInResult,
-  storeQuizResult,
-} from "../../services/quiz.services";
-import {
-  addCompletedQuiz,
-  getUserNameByUserId,
-} from "../../services/user.services";
 
 const QuizResults = () => {
   const { state } = useLocation();
   const { quiz, userAnswers, timeTaken } = state;
+
   const navigate = useNavigate();
-  const [user] = useAuthState(auth);
   let correctAnswersCount = 0;
   let points = 0;
 
@@ -31,24 +21,6 @@ const QuizResults = () => {
     0
   );
   const successRate = (correctAnswersCount / quiz.questions.length) * 100;
-
-  useEffect(() => {
-    if (user) {
-      storeQuizResult(user.uid, quiz.id, points);
-      addCompletedQuiz(user.uid, quiz.id);
-
-      getUserNameByUserId(user.uid).then((username) => {
-        const score = {
-          score: points,
-          timeTaken,
-          userID: user.uid,
-          username,
-        };
-
-        storeDataInResult(quiz.id, score);
-      });
-    }
-  }, [user, quiz.id, points, timeTaken]);
 
   const handleGoBack = () => {
     navigate("/");

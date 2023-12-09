@@ -67,12 +67,12 @@ export const createQuiz = async (createdBy, quiz) => {
   return await quizRef.key;
 };
 
-export const storeQuizResult = async (uid, quizId, score) => {
-  const quizResultsRef = ref(db, `quizResults/${quizId}/${uid}`);
+export const storeQuizResult = async (quizId, score) => {
+  const quizResultsRef = ref(db, `quizzes/${quizId}/results`);
   await set(quizResultsRef, { score });
 };
 
-export const storeDataInResult = async (quizId, score, uid, timeTaken) => {
+export const storeDataInResult = async (quizId, score) => {
   try {
     const resultsRef = ref(db, `quizzes/${quizId}/results`);
     const resultsSnapshot = await get(query(resultsRef));
@@ -83,10 +83,10 @@ export const storeDataInResult = async (quizId, score, uid, timeTaken) => {
     }
 
     // Checks if the authenticated user has completed the specific quiz
-    const hasCompleted = results.some(result => result.uid === uid);
+    const hasCompleted = results.some(result => result.userID === score.userID);
     if (!hasCompleted) {
-      // Stores the result, if the user hasn't completed the quiz
-      results.push({ score, userID: userId, timeTaken });
+      // Stores the result, only if the user hasn't completed the quiz
+      results.push(score);
       await set(resultsRef, results);
     }
   } catch (error) {

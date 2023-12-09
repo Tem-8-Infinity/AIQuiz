@@ -114,10 +114,6 @@ const ProfilePage = () => {
           />
         )}
       </div>
-      <div className="mb-4 ">
-        <label className="block mb-2 font-bold text-4xl">Role:{user?.role}</label>
-        
-      </div>
       <div className="mb-4">
         <label className="block mb-2 font-bold text-2xl">New Password:</label>
         <input

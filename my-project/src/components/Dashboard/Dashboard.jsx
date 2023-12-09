@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { getQuizById, getTopPerformers } from "../../services/quiz.services";
 
 const Dashboard = () => {
+  const { state } = useLocation();
   const [quiz, setQuiz] = useState({});
   const { quizId } = useParams();
   const navigate = useNavigate();
@@ -17,11 +18,16 @@ const Dashboard = () => {
   }, []);
 
   const beginQuiz = () => {
-    navigate(`/StartQuiz/quiz/${quiz.id}`, { state: { quiz } });
+    if (state?.hasCompletedQuiz) {
+      const category = state.category;
+      navigate(`/DisplayQuizes`, { state: { category } });
+    } else {
+      navigate(`/StartQuiz/quiz/${quiz.id}`, { state: { quiz } });
+    }
   };
 
   return (
-    <div className="container mx-auto p-4 border shadow-md rounded bg-gradient-to-br from-violet-400 to-teal-200 font-bold">
+    <div className=" container mx-auto p-4 border shadow-md rounded bg-gradient-to-br from-violet-400 to-teal-200 text-black font-bold">
       <div className="flex">
         <h2 className="text-2xl font-bold mb-4">{quiz?.quizName}</h2>
         <div
@@ -37,9 +43,8 @@ const Dashboard = () => {
       <h4 className="text-2xl font-bold mb-4">Quiz Results</h4>
       <div className="overflow-x-auto">
         <table className="table">
-          {/* head */}
           <thead>
-            <tr>
+            <tr className="dash__board text-black font-bold">
               <th></th>
               <th>Name</th>
               <th>Points</th>
@@ -54,8 +59,11 @@ const Dashboard = () => {
           </tbody>
         </table>
       </div>
-      <button className="btn btn-primary text-white bg-violet-600 border-none" onClick={beginQuiz}>
-        Begin Quiz
+      <button
+        className="btn btn-primary text-white bg-violet-600 border-none"
+        onClick={beginQuiz}
+      >
+        {state?.hasCompletedQuiz ? "Back" : "Begin Quiz"}
       </button>
     </div>
   );
