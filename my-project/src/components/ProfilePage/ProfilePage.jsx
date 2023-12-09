@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { getAuth, updatePassword } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../../config/firebase-config";
+import { db, storage } from "../../config/firebase-config";
 import useUserStore from "../../context/store";
 import { changeUserAvatar, updateUserData } from "../../services/user.services";
 import { toast } from "react-toastify";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import {ref as dbRef, equalTo, get, orderByChild, query, remove } from "firebase/database";
+import { useNavigate } from "react-router-dom";
+
+const selectBadgeColor = (difficulty) => {
+  return difficulty === "Hard"
+    ? "badge-secondary bg-red-600"
+    : difficulty === "Medium"
+    ? "badge-secondary bg-orange-600"
+    : "badge-secondary bg-green-800";
+};
 
 const ProfilePage = () => {
   const user = useUserStore((state) => state.user);
@@ -14,6 +24,24 @@ const ProfilePage = () => {
   const [email, setEmail] = useState(user?.email || "");
   const [avatar, setAvatar] = useState(user?.avatarUrl || "");
   const [newPassword, setNewPassword] = useState("");
+  const [quizzes, setQuizzes] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    if(!user){
+    return;
+    }
+    console.log(user);
+    const quizRef = dbRef(db, "quizzesTest");
+    const quizQuery = query(quizRef, orderByChild("createdBy"), equalTo(user.username));
+    get(quizQuery).then(snapshot=>{
+      console.log(snapshot.val());
+      setQuizzes(Object.keys(snapshot.val()).map(key=>({
+        id : key,
+        ...snapshot.val()[key]
+      })))
+    })
+  },[user])
   const auth = getAuth();
 
   const handlePasswordChange = async () => {
@@ -128,6 +156,38 @@ const ProfilePage = () => {
         >
           Change Password
         </button>
+      </div>
+      <div className="flex flex-wrap gap-5">
+      {quizzes.map((quiz, index) => (
+        <div key={index} className="card bg-border shadow-md rounded bg-gradient-to-br from-teal-400 to-teal-100 text-black font-bold">
+          <div>
+          <button className="btn" onClick={()=>{
+            navigate(`/EditQuiz/${quiz.id}`)
+          }}>Edit</button>
+          <button className="btn" onClick={async ()=>{
+            const quizRef = dbRef(db, `quizzesTest/${quiz.id}`);
+            await remove(quizRef);
+            setQuizzes(quizzes.filter(q=>q.id !== quiz.id ))
+          }}>Delete</button>
+          </div>
+          <div className="card-body text-black">
+            <h2 className="card-title">
+              {quiz.title}
+              <div
+                className={`badge ${selectBadgeColor(quiz.quizDifficulty)}`}
+                style={{ border: "none", padding: "3%", marginBottom: 4 }}
+              >
+                {quiz.difficulty}
+              </div>
+            </h2>
+            {console.log(quiz)}
+            <p>Created by: {quiz.createdBy}</p>
+            <p>Category: {quiz.category}</p>
+            <p>Duration: {quiz.maxDuration}</p>
+            <p>End Date: {new Date(quiz.endDate).toLocaleString()}</p>
+          </div>
+        </div>
+      ))}
       </div>
     </div>
   );

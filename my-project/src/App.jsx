@@ -22,6 +22,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import PrivateHome from "./components/PrivateHome/PrivateHome";
 import CreateQuestionnaire from "./components/CreateQuestionnaire/CreateQuestionnaire";
 import DisplayQuestionnaire from "./components/DisplayQuestionnaire/DisplayQuestionnaire";
+import EditQuiz from "./components/EditQuiz/EditQuiz";
 
 
 function App() {
@@ -95,6 +96,14 @@ function App() {
           element={
             <AuthenticatedRoute>
               <CreateQuestionnaire />
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/EditQuiz/:quizId"
+          element={
+            <AuthenticatedRoute>
+              <EditQuiz />
             </AuthenticatedRoute>
           }
         />

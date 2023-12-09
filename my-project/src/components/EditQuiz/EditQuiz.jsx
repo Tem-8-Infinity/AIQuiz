@@ -7,24 +7,32 @@ import {
   Navigate,
   redirect,
   useNavigate,
+  useParams,
 } from "react-router-dom";
 import { useFormik } from "formik";
-import { auth } from "../../config/firebase-config";
+import { auth, db } from "../../config/firebase-config";
 import useUserStore from "../../context/store";
+import { get, ref, set, update } from "firebase/database";
 
-const CreateQuiz = () => {
-  // const [user,loading, error] = useAuthState(auth);
-  const user = useUserStore((state) => state.user);
-  const [quizDetails, setQuizDetails] = useState({
-    category: "Categories",
-    title: "",
-    maxDuration: "",
-    isPrivate: false,
-    type: "",//Open or Private
-  });
-
-  const navigate = useNavigate();
-
+const EditQuiz = () => {
+    const {quizId} = useParams();
+    // const [user,loading, error] = useAuthState(auth);
+    const user = useUserStore((state) => state.user);
+    const [quizDetails, setQuizDetails] = useState({
+        category: "Categories",
+        title: "",
+        maxDuration: "",
+        isPrivate: false,
+        type: "",//Open or Private
+    });
+    
+    const navigate = useNavigate();
+    useEffect(()=>{
+        const quizRef = ref(db, `quizzesTest/${quizId}`)
+        get(quizRef).then(snapshot=>{
+            setQuizDetails(snapshot.val());
+        })
+    },[]);
   const handleInputChange = (evt) => {
     setQuizDetails((prevDetails) => ({
       ...prevDetails,
@@ -45,11 +53,10 @@ const CreateQuiz = () => {
     ev.preventDefault();
     console.log("Quiz Created:", quizDetails);
     console.log(user);
-    const key = await createQuiz(
-      user.username,
-      quizDetails,
-      ); //createdBy,isPrivate,quizCategory,quizDifficulty, quizDuration, quizName
-    navigate(`/DisplayQuestionnaire/${key}`);
+     await set(ref(db, `quizzesTest/${quizId}`), {
+        ...quizDetails,
+    })
+    navigate(`/DisplayQuestionnaire/${quizId}`);
   };
 
   const categories = ["Books", "Films", "Animals", "History"];
@@ -137,7 +144,6 @@ const CreateQuiz = () => {
               onChange={handleInputChange}
               name="startDate"
               type="date"
-              min={new Date(Date.now()).toISOString().split("T")[0]}
               placeholder="Set start date"
               className="input input-bordered w-full max-w-xs ml-3 mt-2"
             />
@@ -150,7 +156,6 @@ const CreateQuiz = () => {
               onChange={handleInputChange}
               name="endDate"
               type="date"
-              min={new Date((new Date(quizDetails.startDate).valueOf() || Date.now())+24*3600*1000).toISOString().split("T")[0]}
               placeholder="Set end date"
               className="input input-bordered w-full max-w-xs ml-5 mt-1"
             />
@@ -189,4 +194,4 @@ const CreateQuiz = () => {
   );
 };
 
-export default CreateQuiz;
+export default EditQuiz;
