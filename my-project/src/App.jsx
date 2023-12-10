@@ -23,6 +23,7 @@ import PrivateHome from "./components/PrivateHome/PrivateHome";
 import CreateQuestionnaire from "./components/CreateQuestionnaire/CreateQuestionnaire";
 import DisplayQuestionnaire from "./components/DisplayQuestionnaire/DisplayQuestionnaire";
 import EditQuiz from "./components/EditQuiz/EditQuiz";
+import QuizzesList from "./components/QuizzesList/QuizzesList";
 
 
 function App() {
@@ -104,6 +105,14 @@ function App() {
           element={
             <AuthenticatedRoute>
               <EditQuiz />
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/QuizzesList"
+          element={
+            <AuthenticatedRoute>
+              <QuizzesList />
             </AuthenticatedRoute>
           }
         />

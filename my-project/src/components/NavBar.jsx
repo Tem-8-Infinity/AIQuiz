@@ -105,6 +105,10 @@ const NavBar = () => {
                       <Link to={"/createQuiz"} className="justify-between">
                         Create Quiz
                       </Link>
+                      
+                      <Link to={"/QuizzesList"} className="justify-between">
+                      My Quizzes
+                      </Link>
                     </li>
                   )}
                   {user?.role === "admin" && (
@@ -119,6 +123,10 @@ const NavBar = () => {
 
                       <Link to={"/createQuiz"} className="justify-between">
                         Create Quiz
+                      </Link>
+                      
+                      <Link to={"/QuizzesList"} className="justify-between">
+                      Quizzes List
                       </Link>
 
                     </li>
