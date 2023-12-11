@@ -98,10 +98,6 @@ const NavBar = () => {
                 >
                   {user?.role === "educator" && (
                     <li>
-                      <Link to={"/EducatorPanel"} className="justify-between">
-                        Educator Panel
-                      </Link>
-
                       <Link to={"/createQuiz"} className="justify-between">
                         Create Quiz
                       </Link>
@@ -115,10 +111,6 @@ const NavBar = () => {
                     <li>
                       <Link to={"/AdminPanel"} className="justify-between">
                         Admin Panel
-                      </Link>
-
-                      <Link to={"/EducatorPanel"} className="justify-between">
-                        Educator Panel
                       </Link>
 
                       <Link to={"/createQuiz"} className="justify-between">
