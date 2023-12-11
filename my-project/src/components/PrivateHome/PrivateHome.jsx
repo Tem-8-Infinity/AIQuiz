@@ -12,6 +12,12 @@ const PrivateHome = () => {
     "Education",
     "Home",
     "Training",
+    "Movies",
+    "Math",
+    "Animals",
+    "TV Shows",
+    "Anime",
+    "Geography",
   ];
 
   return (
