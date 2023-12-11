@@ -1,6 +1,6 @@
-import { equalTo, get, orderByChild, query, ref, set } from "firebase/database";
+import { equalTo, get, orderByChild, query, ref, remove, set } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../../config/firebase-config";
 
 const DisplayQuestionnaire = () => {
@@ -8,12 +8,13 @@ const DisplayQuestionnaire = () => {
   const navigate = useNavigate();
   const [questionnaires, setQuestionnaires] = useState([]);
   useEffect(() => {
-    const dataRef = ref(db, `quizzesTest/${quizId}`);
+    const dataRef = ref(db, `quizzes/${quizId}`);
     get(dataRef).then((snapshot) => {
       if (snapshot.exists()) {
         console.log(snapshot.val());
         let data = [];
         for (const [key, value] of Object.entries(snapshot.val().questions)) {
+          value["id"] = key
           data.push(value);
         }
         setQuestionnaires(data);
@@ -34,6 +35,14 @@ const DisplayQuestionnaire = () => {
           <div className='flex flex-row gap-5 card-body font-bold text-lg'>
           <div>{id+1}.</div>{/*Count mechanism */}
           <div>{q.question}</div>
+          <Link className="btn btn-primary" to={`/EditQuestionnaire/${quizId}/${q.id}`}>
+            Edit
+          </Link>
+          <button onClick={async ()=>{
+            const questionRef = ref(db, `/quizzes/${quizId}/questions/${q.id}`);
+            await remove(questionRef);
+            setQuestionnaires(questionnaires.filter(questionnaire=>questionnaire.id != q.id ))
+          }}>Delete</button>
           </div>
          </li>
          ))}

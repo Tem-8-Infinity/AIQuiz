@@ -28,7 +28,7 @@ const EditQuiz = () => {
     
     const navigate = useNavigate();
     useEffect(()=>{
-        const quizRef = ref(db, `quizzesTest/${quizId}`)
+        const quizRef = ref(db, `quizzes/${quizId}`)
         get(quizRef).then(snapshot=>{
             setQuizDetails(snapshot.val());
         })
@@ -53,7 +53,7 @@ const EditQuiz = () => {
     ev.preventDefault();
     console.log("Quiz Created:", quizDetails);
     console.log(user);
-     await set(ref(db, `quizzesTest/${quizId}`), {
+     await set(ref(db, `quizzes/${quizId}`), {
         ...quizDetails,
     })
     navigate(`/DisplayQuestionnaire/${quizId}`);

@@ -22,7 +22,7 @@ const QuizzesList = () => {
     return;
     }
     console.log(user);
-    const quizRef = ref(db, "quizzesTest");
+    const quizRef = ref(db, "quizzes");
     if(user.admin){
         get(quizRef).then(snapshot=>{
             console.log(snapshot.val());
@@ -53,7 +53,7 @@ const QuizzesList = () => {
             navigate(`/EditQuiz/${quiz.id}`)
           }}>Edit</button>
           <button className="btn" onClick={async ()=>{
-            const quizRef = ref(db, `quizzesTest/${quiz.id}`);
+            const quizRef = ref(db, `quizzes/${quiz.id}`);
             await remove(quizRef);
             setQuizzes(quizzes.filter(q=>q.id !== quiz.id ))
           }}>Delete</button>

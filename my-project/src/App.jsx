@@ -24,6 +24,7 @@ import CreateQuestionnaire from "./components/CreateQuestionnaire/CreateQuestion
 import DisplayQuestionnaire from "./components/DisplayQuestionnaire/DisplayQuestionnaire";
 import EditQuiz from "./components/EditQuiz/EditQuiz";
 import QuizzesList from "./components/QuizzesList/QuizzesList";
+import EditQuestionnaire from "./components/EditQuestionnaire/EditQuestionnaire";
 
 
 function App() {
@@ -113,6 +114,14 @@ function App() {
           element={
             <AuthenticatedRoute>
               <QuizzesList />
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/EditQuestionnaire/:quizId/:questionId"
+          element={
+            <AuthenticatedRoute>
+              <EditQuestionnaire />
             </AuthenticatedRoute>
           }
         />

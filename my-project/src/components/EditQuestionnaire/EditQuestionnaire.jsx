@@ -4,15 +4,22 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../config/firebase-config';
 
 
-const CreateQuestionnaire = () => {
+const EditQuestionnaire = () => {
     const [questionnaire,setQuestionnaire]= useState({
       correctAnswer:"",//the first one is true, should randomize
       incorrectAnswers:['','',''],
       maxDuration:0,
       points:0,
     });
-    const {quizId} = useParams();
+    const {quizId, questionId} = useParams();
     const navigate = useNavigate();
+
+    useEffect(()=>{
+       const questionRef = ref(db, `quizzes/${quizId}/questions/${questionId}`)
+       get(questionRef).then(snapshot=>{
+        setQuestionnaire(snapshot.val())
+       })
+    },[]);
 
     const handleInputChange = (evt) => {
       setQuestionnaire((prevDetails) => ({
@@ -24,13 +31,13 @@ const CreateQuestionnaire = () => {
         return(
       <form className='flex flex-col p-5 gap-5 w-full' onSubmit={async(e)=>{
          e.preventDefault();
-        const questionnaireRef = ref(db, `quizzes/${quizId}/questions`);
+        const questionnaireRef = ref(db, `quizzes/${quizId}/questions/${questionId}`);
         const data = {
           ...questionnaire,
           points:+questionnaire.points,
           quizId,
         }  
-        await push(questionnaireRef,data)
+        await update(questionnaireRef,data)
         update(ref(db),{
           [`quizzes/${quizId}/id`]:quizId
         })
@@ -83,4 +90,4 @@ const CreateQuestionnaire = () => {
   )
 }
 
-export default CreateQuestionnaire;
+export default EditQuestionnaire;

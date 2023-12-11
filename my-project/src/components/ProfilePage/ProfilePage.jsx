@@ -32,7 +32,7 @@ const ProfilePage = () => {
     return;
     }
     console.log(user);
-    const quizRef = dbRef(db, "quizzesTest");
+    const quizRef = dbRef(db, "quizzes");
     const quizQuery = query(quizRef, orderByChild("createdBy"), equalTo(user.username));
     get(quizQuery).then(snapshot=>{
       console.log(snapshot.val());
@@ -165,7 +165,7 @@ const ProfilePage = () => {
             navigate(`/EditQuiz/${quiz.id}`)
           }}>Edit</button>
           <button className="btn" onClick={async ()=>{
-            const quizRef = dbRef(db, `quizzesTest/${quiz.id}`);
+            const quizRef = dbRef(db, `quizzes/${quiz.id}`);
             await remove(quizRef);
             setQuizzes(quizzes.filter(q=>q.id !== quiz.id ))
           }}>Delete</button>

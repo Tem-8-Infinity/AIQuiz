@@ -13,6 +13,7 @@ const StartQuiz = () => {
   const [user] = useAuthState(auth);
   const { state } = useLocation();
   const quiz = state.quiz;
+  quiz["questions"] = Object.values(quiz.questions || {a:[]});
 
   const maxDurationInMinutes = parseInt(quiz.maxDuration, 10);
 
@@ -44,9 +45,11 @@ const StartQuiz = () => {
 
     return () => clearInterval(timer);
   }, [secondsLeft, minutesLeft, isRunning]);
-
+  
   useEffect(() => {
+    console.log(quiz);
     setIsRunning(true);
+
   }, []);
 
   const finishQuiz = () => {
@@ -133,7 +136,7 @@ const StartQuiz = () => {
         <div className="card-body">
           <h2 className="card-title">{decodeHtml(question?.question)}</h2>
           <div className="space-y-2">
-            {[...question?.incorrectAnswers, question?.correctAnswer].map(
+            {[...(question?.incorrectAnswers || []), question?.correctAnswer].map(
               (answer, index) => (
                 <button
                   key={index}

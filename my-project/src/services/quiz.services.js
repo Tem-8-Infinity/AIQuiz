@@ -55,7 +55,7 @@ export const getAllQuizzesNoFilter = async () => {
 };
 
 export const createQuiz = async (createdBy, quiz) => {
-  const quizRef = push(ref(db, '/quizzesTest'));
+  const quizRef = push(ref(db, '/quizzes'));
   await set((quizRef), {
     createdBy,
     ...quiz,

@@ -16,9 +16,9 @@ const CreateQuiz = () => {
   // const [user,loading, error] = useAuthState(auth);
   const user = useUserStore((state) => state.user);
   const [quizDetails, setQuizDetails] = useState({
-    category: "Categories",
+    quizCategory: "Categories",
     title: "",
-    maxDuration: "",
+    maximumPoints: "",
     isPrivate: false,
     type: "",//Open or Private
   });
@@ -69,8 +69,8 @@ const CreateQuiz = () => {
             <label>Category :</label>
             <select
               required
-              name="category"
-              value={quizDetails.category}
+              name="quizCategory"
+              value={quizDetails.quizCategory}
               onChange={handleInputChange}
               className="select select-bordered w-full mt-3"
               >
@@ -88,9 +88,9 @@ const CreateQuiz = () => {
             <label>Title :</label>
             <input
               required
-              value={quizDetails.title}
+              value={quizDetails.quizName}
               onChange={handleInputChange}
-              name="title"
+              name="quizName"
               type="text"
               placeholder="Title of the quiz"
               className="input input-bordered w-full mt-3 text-base"
