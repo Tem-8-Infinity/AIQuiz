@@ -43,26 +43,25 @@ const QuizzesList = () => {
     })
 },[user])
   return (
-    <div>
-        QuizzesList
-        {user.admin && <button className={`btn btn-accent`} onClick={()=>{setFilter(!filter)}}>{filter ? 'Display only My quizzes' : 'Display All Quizzes'}</button>}
+    <div className='bg-border  bg-gradient-to-br from-teal-400 to-teal-10 p-2'>
+        {user.admin && <button className={`btn bg-gradient-to-br from-violet-400 to-teal-200 text-black font-bold border-none mb-3 m-4`} onClick={()=>{setFilter(!filter)}}>{filter ? 'Display only My quizzes' : 'Display All Quizzes'}</button>}
         {(filter ? quizzes.filter(quiz=>quiz.createdBy === user.username): quizzes).map((quiz, index) => (
         <div key={index} className="card bg-border shadow-md rounded bg-gradient-to-br from-teal-400 to-teal-100 text-black font-bold">
-          <div>
-          <button className="btn" onClick={()=>{
+          <div className='flex flex-wrap m-5 '>
+          <button className="btn bg-gradient-to-br from-violet-400 to-teal-200 text-black font-bold border-none " onClick={()=>{
             navigate(`/EditQuiz/${quiz.id}`)
           }}>Edit</button>
-          <button className="btn" onClick={async ()=>{
+          <button className="btn bg-gradient-to-br from-violet-400 to-teal-200 text-black font-bold border-none ml-1" onClick={async ()=>{
             const quizRef = ref(db, `quizzes/${quiz.id}`);
             await remove(quizRef);
             setQuizzes(quizzes.filter(q=>q.id !== quiz.id ))
           }}>Delete</button>
           </div>
-          <div className="card-body text-black">
+          <div className="card-body text-black ">
             <h2 className="card-title">
               {quiz.title}
               <div
-                className={`badge ${selectBadgeColor(quiz.quizDifficulty)}`}
+                className={`badge ${selectBadgeColor(quiz.difficulty)}`}
                 style={{ border: "none", padding: "3%", marginBottom: 4 }}
               >
                 {quiz.difficulty}
@@ -72,7 +71,7 @@ const QuizzesList = () => {
             <p>Created by: {quiz.createdBy}</p>
             <p>Category: {quiz.category}</p>
             <p>Duration: {quiz.maxDuration}</p>
-            <p>End Date: {new Date(quiz.endDate).toLocaleString()}</p>
+            <p>End Date: {new Date(quiz.endDate).toLocaleDateString()}</p>
           </div>
         </div>
       ))}
