@@ -15,7 +15,7 @@ const selectBadgeColor = (difficulty) => {
 const QuizzesList = () => {
     const [quizzes, setQuizzes] = useState([]);
     const user = useUserStore((state) => state.user);
-    const [filter,setFilter] = useState(false); 
+    const [filter,setFilter] = useState(true); 
     const navigate = useNavigate();
   useEffect(()=>{
     if(!user){
@@ -43,8 +43,13 @@ const QuizzesList = () => {
     })
 },[user])
   return (
-    <div className='bg-border  bg-gradient-to-br from-teal-400 to-teal-10 p-2'>
+    <div className='bg-border bg-gradient-to-br from-teal-400 to-teal-10 p-2 min-h-screen'>
         {user.admin && <button className={`btn bg-gradient-to-br from-violet-400 to-teal-200 text-black font-bold border-none mb-3 m-4`} onClick={()=>{setFilter(!filter)}}>{filter ? 'Display only My quizzes' : 'Display All Quizzes'}</button>}
+        {quizzes.length === 0 && (
+          <div className='flex flex-col justify-center  text-center'> 
+          <p className=''>  You have no quizzes yet ! </p>
+          </div>
+        )}
         {(filter ? quizzes.filter(quiz=>quiz.createdBy === user.username): quizzes).map((quiz, index) => (
         <div key={index} className="card bg-border shadow-md rounded bg-gradient-to-br from-teal-400 to-teal-100 text-black font-bold">
           <div className='flex flex-wrap m-5 '>

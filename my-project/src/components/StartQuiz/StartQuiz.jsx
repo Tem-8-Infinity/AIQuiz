@@ -22,6 +22,7 @@ const StartQuiz = () => {
   const [minutesLeft, setMinutesLeft] = useState(maxDurationInMinutes);
   const [userAnswers, setUserAnswers] = useState({});
   const [isRunning, setIsRunning] = useState(true);
+  const [options,setOptions] = useState([[]]);
   const navigate = useNavigate();
   let timer;
 
@@ -49,7 +50,7 @@ const StartQuiz = () => {
   useEffect(() => {
     console.log(quiz);
     setIsRunning(true);
-
+    setOptions(quiz.questions.map(q=>shuffle([...q.incorrectAnswers, q.correctAnswer])))
   }, []);
 
   const finishQuiz = () => {
@@ -69,9 +70,9 @@ const StartQuiz = () => {
       }
     });
 
-    addCompletedQuiz(user.uid, quiz.id);
-
-    getUserNameByUserId(user.uid).then((username) => {
+    
+    if(user){getUserNameByUserId(user.uid).then((username) => {
+      addCompletedQuiz(user.uid, quiz.id);
       const score = {
         score: points,
         timeTaken: formattedTimeTaken,
@@ -80,7 +81,16 @@ const StartQuiz = () => {
       };
 
       storeDataInResult(quiz.id, score);
-    });
+    })}else{
+      console.log(points);
+      const score = {
+        score: points,
+        timeTaken: formattedTimeTaken,
+        userID: "",
+        username: "",
+      };
+      storeDataInResult(quiz.id, score);
+    }
 
     navigate("/QuizResults", {
       state: { quiz, userAnswers, timeTaken: formattedTimeTaken },
@@ -136,7 +146,7 @@ const StartQuiz = () => {
         <div className="card-body">
           <h2 className="card-title">{decodeHtml(question?.question)}</h2>
           <div className="space-y-2">
-            {[...(question?.incorrectAnswers || []), question?.correctAnswer].map(
+            {options[currentQuestionIndex].map(
               (answer, index) => (
                 <button
                   key={index}
@@ -174,5 +184,22 @@ const StartQuiz = () => {
     </div>
   );
 };
+function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+  
+  // While there remain elements to shuffle.
+  while (currentIndex > 0) {
+  
+  // Pick a remaining element.
+  randomIndex = Math.floor(Math.random() * currentIndex);
+  currentIndex--;
+  
+  // And swap it with the current element.
+  [array[currentIndex], array[randomIndex]] = [
+  array[randomIndex], array[currentIndex]];
+  }
+  
+  return array;
+  }
 
 export default StartQuiz;

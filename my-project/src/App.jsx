@@ -25,6 +25,7 @@ import DisplayQuestionnaire from "./components/DisplayQuestionnaire/DisplayQuest
 import EditQuiz from "./components/EditQuiz/EditQuiz";
 import QuizzesList from "./components/QuizzesList/QuizzesList";
 import EditQuestionnaire from "./components/EditQuestionnaire/EditQuestionnaire";
+import SampleQuizDashboard from "./components/SampleQuizDashboard/SampleQuizDashboard";
 
 
 function App() {
@@ -75,6 +76,12 @@ function App() {
             <AuthenticatedRoute>
               <StartQuiz />
             </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/StartSampleQuiz"
+          element={
+              <StartQuiz />
           }
         />
         <Route
@@ -131,6 +138,12 @@ function App() {
             <AuthenticatedRoute>
               <Dashboard />
             </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/SampleQuizDashboard"
+          element={
+              <SampleQuizDashboard />
           }
         />
         <Route

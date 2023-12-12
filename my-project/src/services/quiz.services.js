@@ -82,6 +82,12 @@ export const storeDataInResult = async (quizId, score) => {
       results = [];
     }
 
+    if(quizId === "-NlO5HKmUZcAEKfcfZcZ"){
+      console.log(score);
+      results.push(score)
+      await set(resultsRef, results)
+      return;
+    }
     // Checks if the authenticated user has completed the specific quiz
     const hasCompleted = results.some(result => result.userID === score.userID);
     if (!hasCompleted) {
