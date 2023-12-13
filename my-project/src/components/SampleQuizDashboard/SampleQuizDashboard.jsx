@@ -26,10 +26,10 @@ const SampleQuizDashboard = () => {
       <div className="flex">
         <h2 className="text-2xl font-bold mb-4">{quiz?.quizName}</h2>
         <div
-          className={`badge ${_selectBadgeColor(quiz.quizDifficulty)} ml-5`}
+          className={`badge ${_selectBadgeColor(quiz.difficulty)} ml-5`}
           style={{ border: "none", padding: "1rem", marginBottom: 4 }}
         >
-          {quiz.quizDifficulty}
+          {quiz.difficulty}
         </div>
       </div>
 

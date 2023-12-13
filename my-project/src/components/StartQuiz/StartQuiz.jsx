@@ -79,6 +79,7 @@ const StartQuiz = () => {
         userID: user.uid,
         username,
       };
+      console.log("Finish");
 
       storeDataInResult(quiz.id, score);
     })}else{
@@ -90,6 +91,10 @@ const StartQuiz = () => {
         username: "",
       };
       storeDataInResult(quiz.id, score);
+    }
+    if(quiz.id === "-NlO5HKmUZcAEKfcfZcZ"){
+      navigate("/SignUp");
+      return
     }
 
     navigate("/QuizResults", {
