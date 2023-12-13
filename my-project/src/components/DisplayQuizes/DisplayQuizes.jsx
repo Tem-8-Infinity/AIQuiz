@@ -63,8 +63,6 @@ const DisplayQuizes = () => {
     setFilter(filterType);
     switch (filterType) {
       case "Completed Quizzes":
-        console.log(completedQuizzes);
-        console.log(quizzes);
         filtered = quizzes.filter((quiz) => completedQuizzes.includes(quiz.id));
         break;
       case "Coming Soon":

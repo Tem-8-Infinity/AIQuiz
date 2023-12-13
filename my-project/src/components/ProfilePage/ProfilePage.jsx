@@ -27,7 +27,6 @@ const ProfilePage = () => {
     if (!user) {
       return;
     }
-    console.log(user);
     const quizRef = dbRef(db, "quizzesTest");
 
     const quizQuery = query(
@@ -36,7 +35,6 @@ const ProfilePage = () => {
       equalTo(user.username)
     );
     get(quizQuery).then((snapshot) => {
-      console.log(snapshot.val());
       setQuizzes(Object.values(snapshot.val()));
     });
   }, [user]);

@@ -19,7 +19,6 @@ const DisplayQuestionnaire = () => {
     const dataRef = ref(db, `quizzes/${quizId}`);
     get(dataRef).then((snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
         let data = [];
         for (const [key, value] of Object.entries(snapshot.val().questions)) {
           value["id"] = key;
@@ -28,7 +27,6 @@ const DisplayQuestionnaire = () => {
         setQuestionnaires(data);
       }
     });
-    console.log(questionnaires);
   }, []);
   return (
     <>

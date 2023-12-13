@@ -45,8 +45,6 @@ const EditQuiz = () => {
   const handleEditQuiz = async (ev) => {
     // Implement the logic to create a quiz using quizDetails
     ev.preventDefault();
-    console.log("Quiz Created:", quizDetails);
-    console.log(user);
     await set(ref(db, `quizzes/${quizId}`), {
       ...quizDetails,
     });
@@ -69,7 +67,6 @@ const EditQuiz = () => {
   const difficulty = ["Hard", "Medium", "Easy"];
 
   useEffect(() => {
-    console.log(quizDetails);
   }, [quizDetails]);
 
   if (quizDetails === null) {

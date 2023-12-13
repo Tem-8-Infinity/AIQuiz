@@ -37,25 +37,6 @@ export const getUserByHandle = async (handle) => {
   }
 };
 
-{/*An example of how to update role in firebase*/ }
-
-//export const getUserRoleLive = (uid, listener) => {
-//try {
-// const updatedRole = 
-// return onValue(get(ref(db, `users/${uid}/role`), snapshot => {
-//   if (!snapshot.exists()) {
-//     return listener([])
-//   } 
-//   const role = snapshot.val();
-//   console.log(role)
-//   return listener(role)
-// }))
-//return updatedRole();
-// } catch (error) {
-//   toast.error("Error getting role");
-//}
-//};
-
 
 export const isUserBlocked = async (email) => {
   const users = (await get(ref(db, `users`))).val();
@@ -112,7 +93,6 @@ export const getUserData = async (uid) => {
     if (snapshot.exists()) {
       return snapshot.val();
     } else {
-      console.log("No user data available");
       return null;
     }
   } catch (error) {

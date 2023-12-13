@@ -48,7 +48,6 @@ const StartQuiz = () => {
   }, [secondsLeft, minutesLeft, isRunning]);
 
   useEffect(() => {
-    console.log(quiz);
     setIsRunning(true);
     setOptions(
       quiz.questions.map((q) =>
@@ -83,12 +82,10 @@ const StartQuiz = () => {
           userID: user.uid,
           username,
         };
-        console.log("Finish");
 
         storeDataInResult(quiz.id, score);
       });
     } else {
-      console.log(points);
       const score = {
         score: points,
         timeTaken: formattedTimeTaken,

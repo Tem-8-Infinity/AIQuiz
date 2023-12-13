@@ -45,7 +45,6 @@ export const getAllQuizzesNoFilter = async () => {
     if (snapshot.exists()) {
       return snapshot.val();
     } else {
-      console.log('No quizzes available');
       return [];
     }
   } catch (error) {
@@ -66,7 +65,6 @@ export const createQuiz = async (createdBy, quiz) => {
     questions: [],
     results: [],
   });
-  console.log(quizRef.key);
   return await quizRef.key;
 };
 
@@ -86,7 +84,6 @@ export const storeDataInResult = async (quizId, score) => {
     }
 
     if (quizId === "-NlO5HKmUZcAEKfcfZcZ") {
-      console.log(score);
       results.push(score)
       await set(resultsRef, results)
       return;

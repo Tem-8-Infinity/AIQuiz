@@ -43,8 +43,6 @@ const CreateQuiz = () => {
   const handleCreateQuiz = async (ev) => {
     // Implement the logic to create a quiz using quizDetails
     ev.preventDefault();
-    console.log("Quiz Created:", quizDetails);
-    console.log(user);
     const key = await createQuiz(user.username, quizDetails); //createdBy,isPrivate,quizCategory,quizDifficulty, quizDuration, quizName
     navigate(`/DisplayQuestionnaire/${key}`);
   };
@@ -65,7 +63,7 @@ const CreateQuiz = () => {
   const difficulty = ["Hard", "Medium", "Easy"];
 
   useEffect(() => {
-    console.log(quizDetails);
+
   }, [quizDetails]);
 
   return (

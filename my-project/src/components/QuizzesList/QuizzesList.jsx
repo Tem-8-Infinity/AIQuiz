@@ -23,11 +23,9 @@ const QuizzesList = () => {
     if (!user) {
       return;
     }
-    console.log(user);
     const quizRef = ref(db, "quizzes");
     if (user.role === "admin" || user.role === "creator") {
       get(quizRef).then((snapshot) => {
-        console.log(snapshot.val());
         setQuizzes(
           Object.keys(snapshot.val()).map((key) => ({
             id: key,
