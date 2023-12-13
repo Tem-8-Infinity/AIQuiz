@@ -13,7 +13,7 @@ import animal from "./../../assets/icons/animal.svg";
 import all from "./../../assets/icons/all.svg";
 
 export const categoryIconsEnum = Object.freeze({
-  All: all,
+  All: null,
   Science: science,
   Books: book,
   Mythology: mythology,

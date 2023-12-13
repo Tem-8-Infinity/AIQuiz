@@ -18,13 +18,7 @@ const EditQuiz = () => {
     const {quizId} = useParams();
     // const [user,loading, error] = useAuthState(auth);
     const user = useUserStore((state) => state.user);
-    const [quizDetails, setQuizDetails] = useState({
-        category: "Categories",
-        title: "",
-        maxDuration: "",
-        isPrivate: false,
-        type: "",//Open or Private
-    });
+    const [quizDetails, setQuizDetails] = useState(null);
     
     const navigate = useNavigate();
     useEffect(()=>{
@@ -48,7 +42,7 @@ const EditQuiz = () => {
     }));
   };
 
-  const handleCreateQuiz = async (ev) => {
+  const handleEditQuiz = async (ev) => {
     // Implement the logic to create a quiz using quizDetails
     ev.preventDefault();
     console.log("Quiz Created:", quizDetails);
@@ -66,8 +60,11 @@ const EditQuiz = () => {
     console.log(quizDetails);
   }, [quizDetails]);
 
+  if(quizDetails === null){
+    return <div>Loading...</div>
+  }
   return (
-    <form onSubmit={handleCreateQuiz}>
+    <form onSubmit={handleEditQuiz}>
     <div>
       <div className="card w-full bg-base-100 shadow-xl">
         <div className="card-body">
@@ -77,14 +74,11 @@ const EditQuiz = () => {
             <select
               required
               name="category"
-              value={quizDetails.category}
+              value={quizDetails.quizCategory}
               onChange={handleInputChange}
               className="select select-bordered w-full mt-3"
-              >
-              <option selected  value={""}>
-                Categories
-              </option>
-              {categories.map((category, index) => (
+              >            
+              {categories.map((category) => (
                 <option key={category} >
                   {category}
                 </option>
@@ -126,10 +120,10 @@ const EditQuiz = () => {
               onChange={handleInputChange}
               className="select select-bordered w-full max-w-xs mt-3 ml-5"
               >
-              <option selected disabled hidden value={""}>
+              <option disabled hidden value={""}>
                 Select difficulty
               </option>
-              {difficulty.map((d, index) => (
+              {difficulty.map((d) => (
                 <option key={d} >
                   {d}
                 </option>
@@ -142,6 +136,7 @@ const EditQuiz = () => {
              required
               value={quizDetails.startDate}
               onChange={handleInputChange}
+              min={new Date(Date.now()).toISOString().split("T")[0]}
               name="startDate"
               type="date"
               placeholder="Set start date"
@@ -154,6 +149,7 @@ const EditQuiz = () => {
               required
               value={quizDetails.endDate}
               onChange={handleInputChange}
+              min={new Date((new Date(quizDetails.startDate).valueOf() || Date.now())+24*3600*1000).toISOString().split("T")[0]}
               name="endDate"
               type="date"
               placeholder="Set end date"
@@ -190,8 +186,8 @@ const EditQuiz = () => {
         </div>
       </div>
     </div>
-    </form>
-  );
+    </form>)
+
 };
 
 export default EditQuiz;

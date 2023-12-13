@@ -19,7 +19,7 @@ const QuizzesList = () => {
     }
     console.log(user);
     const quizRef = ref(db, "quizzes");
-    if(user.admin){
+    if(user.role === 'admin' || user.role === 'creator'){
         get(quizRef).then(snapshot=>{
             console.log(snapshot.val());
             setQuizzes(Object.keys(snapshot.val()).map(key=>({
@@ -34,14 +34,14 @@ const QuizzesList = () => {
 
           return;
     }
-    const quizQuery = query(quizRef, orderByChild("createdBy"), equalTo(user.username));
-    get(quizQuery).then(snapshot=>{
-      console.log(snapshot.val());
-      setQuizzes(Object.keys(snapshot.val()).map(key=>({
-        id : key,
-        ...snapshot.val()[key]
-      })))
-    })
+    // const quizQuery = query(quizRef, orderByChild("createdBy"), equalTo(user.username));
+    // get(quizQuery).then(snapshot=>{
+    //   console.log(snapshot.val());
+    //   setQuizzes(Object.keys(snapshot.val()).map(key=>({
+    //     id : key,
+    //     ...snapshot.val()[key]
+    //   })))
+    // })
 },[user])
   useEffect(()=>{
     if(search !== ''){
@@ -53,7 +53,7 @@ const QuizzesList = () => {
   return (
     <div className='bg-border bg-gradient-to-br from-teal-400 to-teal-10 p-2 min-h-screen'>
       <div className='flex items-center'>
-        {user.admin && <button className={`btn bg-gradient-to-br from-violet-400 to-teal-200 text-black font-bold border-none mb-3 m-4`} onClick={()=>{setFilter(!filter)}}>{filter ? 'Display only My quizzes' : 'Display All Quizzes'}</button>}
+        {user?.role === "admin" && <button className={`btn bg-gradient-to-br from-violet-400 to-teal-200 text-black font-bold border-none mb-3 m-4`} onClick={()=>{setFilter(!filter)}}>{filter ? 'Display All Quizzes' : 'Display only my Quizzes'}</button>}
         {quizzes.length === 0 ? (
           <div className='flex flex-col justify-center  text-center'> 
           <p className=''>  You have no quizzes yet ! </p>
@@ -92,9 +92,8 @@ const QuizzesList = () => {
                 {quiz.difficulty}
               </div>
             </h2>
-            {console.log(quiz)}
             <p>Created by: {quiz.createdBy}</p>
-            <p>Category: {quiz.category}</p>
+            <p>Category: {quiz.quizCategory}</p>
             <p>Duration: {quiz.maxDuration}</p>
             <p>End Date: {new Date(quiz.endDate).toLocaleDateString()}</p>
           </div>

@@ -56,9 +56,12 @@ export const getAllQuizzesNoFilter = async () => {
 
 export const createQuiz = async (createdBy, quiz) => {
   const quizRef = push(ref(db, '/quizzes'));
+  const quizTitle = quiz.quizName
+  delete quiz.quizName
   await set((quizRef), {
     createdBy,
     ...quiz,
+    title: quizTitle,
     createdOn: Date.now(),
     questions: [],
     results: [],
