@@ -32,16 +32,7 @@ const QuizzesList = () => {
             })))
           })
 
-          return;
     }
-    // const quizQuery = query(quizRef, orderByChild("createdBy"), equalTo(user.username));
-    // get(quizQuery).then(snapshot=>{
-    //   console.log(snapshot.val());
-    //   setQuizzes(Object.keys(snapshot.val()).map(key=>({
-    //     id : key,
-    //     ...snapshot.val()[key]
-    //   })))
-    // })
 },[user])
   useEffect(()=>{
     if(search !== ''){
@@ -79,7 +70,7 @@ const QuizzesList = () => {
           <button className="btn bg-gradient-to-br from-violet-400 to-teal-200 text-black font-bold border-none ml-1" onClick={async ()=>{
             const quizRef = ref(db, `quizzes/${quiz.id}`);
             await remove(quizRef);
-            setQuizzes(quizzes.filter(q=>q.id !== quiz.id ))
+            setFilterQuiz(filterQuiz.filter(q=>q.id !== quiz.id ))
           }}>Delete</button>
           </div>
           <div className="card-body text-black ">

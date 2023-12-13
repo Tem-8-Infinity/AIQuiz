@@ -52,7 +52,7 @@ const CreateQuiz = () => {
     navigate(`/DisplayQuestionnaire/${key}`);
   };
 
-  const categories = ["Books", "Movies", "Animals", "History", "Training", "Science", "Sport", "Education", "Anime", "Geography", "Math", "Home"];
+  const categories = ["Books", "Movies", "Animals", "History", "Training", "Science", "Sport", "Education", "Anime", "Geography", "Math"];
   const difficulty = ["Hard", "Medium", "Easy"];
 
   useEffect(() => {

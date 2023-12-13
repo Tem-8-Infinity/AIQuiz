@@ -10,7 +10,6 @@ import education from "./../../assets/icons/education.svg";
 import book from "./../../assets/icons/book.svg";
 import anime from "./../../assets/icons/anime.svg";
 import animal from "./../../assets/icons/animal.svg";
-import all from "./../../assets/icons/all.svg";
 
 export const categoryIconsEnum = Object.freeze({
   All: null,

@@ -53,7 +53,7 @@ const EditQuiz = () => {
     navigate(`/DisplayQuestionnaire/${quizId}`);
   };
 
-  const categories = ["Books", "Movies", "Animals", "History", "Training", "Science", "Sport", "Education", "Anime", "Geography", "Math", "Home"];
+  const categories = ["Books", "Movies", "Animals", "History", "Training", "Science", "Sport", "Education", "Anime", "Geography", "Math"];
   const difficulty = ["Hard", "Medium", "Easy"];
 
   useEffect(() => {

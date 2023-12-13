@@ -10,7 +10,6 @@ const PrivateHome = () => {
     "History",
     "Sport",
     "Education",
-    "Home",
     "Training",
     "Movies",
     "Math",
