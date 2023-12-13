@@ -1,31 +1,38 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { useFormik } from 'formik';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase-config";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../context/store";
 import { toast } from "react-toastify";
 import { isUserBlocked } from "../services/user.services";
+import { loginSchema } from '../schemas';
 
 const LogIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (await isUserBlocked(email)) {
-        throw new Error();
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: loginSchema,
+    onSubmit: async (values) => {
+      try {
+        if (await isUserBlocked(values.email)) {
+          toast.error("Account is blocked");
+          return;
+        }
+        await signInWithEmailAndPassword(auth, values.email, values.password);
+        toast.success("Logged in Successfully");
+        navigate("/");
+      } catch (error) {
+        setLoginError("Failed to login. Please check your credentials.");
       }
-      await signInWithEmailAndPassword(auth, email, password);
-      toast.success("Logged in Successfully");
-      navigate("/");
-    } catch (error) {
-      setLoginError("Failed to login. Please check your credentials.");
-    }
-  };
+    },
+  });
 
   return (
     <div className="hero min-h-screen bg-gray-300">
@@ -38,19 +45,21 @@ const LogIn = () => {
           </p>
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <form className="card-body" onSubmit={handleSubmit}>
+          <form className="card-body" onSubmit={formik.handleSubmit}>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
               </label>
               <input
                 type="email"
+                name="email"
                 placeholder="email"
                 className="input input-bordered"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+                {...formik.getFieldProps('email')}
               />
+              {formik.touched.email && formik.errors.email && (
+                <p className="text-red-500">{formik.errors.email}</p>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
@@ -58,18 +67,21 @@ const LogIn = () => {
               </label>
               <input
                 type="password"
+                name="password"
                 placeholder="password"
                 className="input input-bordered"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
+                {...formik.getFieldProps('password')}
               />
+              {formik.touched.password && formik.errors.password && (
+                <p className="text-red-500">{formik.errors.password}</p>
+              )}
             </div>
             {loginError && <p className="text-red-500">{loginError}</p>}
             <div className="form-control mt-6">
               <button
                 className="btn btn-primary bg-blue-400"
                 style={{ border: "none", padding: "3%" }}
+                type="submit"
               >
                 Login
               </button>

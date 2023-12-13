@@ -27,10 +27,11 @@ const QuizResults = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 font-bold">
+    <div className="bg-gradient-to-br from-orange-300 to-gray-200">
+    <div className="container mx-auto p-4 font-bold text-black">
       {quiz.questions.map((question, index) => (
         <div key={index} className="mb-4">
-          <p>{question.question}</p>
+          <p>Quiz title: {question.question}</p>
           <p
             style={{
               color:
@@ -40,7 +41,7 @@ const QuizResults = () => {
             Your Answer: {userAnswers[index]}
             {userAnswers[index] !== question.correctAnswer && (
               <span
-                className="ml-2 text-black hover:text-black cursor-pointer font-bold"
+                className="ml-2 text-black hover:text-black cursor-pointer font-bold text-cyan-700"
                 title={question.correctAnswer}
               >
                 Hover to see the correct answer
@@ -49,7 +50,7 @@ const QuizResults = () => {
           </p>
         </div>
       ))}
-      <div className="mt-6">
+      <div className="mt-6 text-black">
         <p>Time Taken: {timeTaken}</p>
         <p>
           Total Points: {points} out of {totalPoints}
@@ -62,6 +63,7 @@ const QuizResults = () => {
           Go Back to Quizzes
         </button>
       </div>
+    </div>
     </div>
   );
 };

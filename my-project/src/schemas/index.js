@@ -14,6 +14,25 @@ export const basicSchema = yup.object().shape({
     role: yup.string().oneOf(['student', 'educator', 'admin'], 'Invalid role').required("Role is required"),
 })
 
-export const quizSchema = yup.object().shape({
+// export const quizSchema = yup.object().shape({
     
-})
+// })
+
+export const quizSchema = yup.object().shape({
+    question: yup.string().required("Question is required").max(50, "The question title must be no more than 50 symbols"),
+    correctAnswer: yup.string().required("Correct answer is required").matches(/^[A-Z]/, "The answer must start with a capital letter."),
+    incorrectAnswers: yup.array().of(
+        yup.string().required("Incorrect answer is required").matches(/^[A-Z]/, "The answer must start with a capital letter.")
+    ).test(
+        'unique', 'No answer should be the same as the other ones', (incorrectAnswers = [], context) => {
+            const allAnswers = [context.parent.correctAnswer, ...incorrectAnswers];
+            return new Set(allAnswers).size === allAnswers.length;
+        }
+    ),
+    points: yup.number().required("Points are required").min(1).max(300),
+});
+
+export const loginSchema = yup.object().shape({
+    email: yup.string().email('Invalid email').required("Email is required"),
+    password: yup.string().required("Password is required"),
+});
