@@ -11,7 +11,7 @@ export const searchUser = (searchTerm, startIndex = 0, usersPerPage = 10) => {
       const users = snapshot.val();
       let filteredUsers = Object.keys(users)
         .map((key) => users[key])
-        .filter(user => 
+        .filter(user =>
           user.username.includes(searchTerm) ||
           user.email.includes(searchTerm) ||
           user.firstName.includes(searchTerm) ||

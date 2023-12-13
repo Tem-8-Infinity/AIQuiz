@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { getQuizById } from '../../services/quiz.services';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { getQuizById } from "../../services/quiz.services";
 
 const SampleQuizDashboard = () => {
-  
   const { state } = useLocation();
   const [quiz, setQuiz] = useState({});
   const navigate = useNavigate();
@@ -18,7 +17,7 @@ const SampleQuizDashboard = () => {
   }, []);
 
   const beginQuiz = () => {
-        navigate(`/StartSampleQuiz`, { state: { quiz } });
+    navigate(`/StartSampleQuiz`, { state: { quiz } });
   };
 
   return (
@@ -71,7 +70,7 @@ const _resultToTableRow = (quizResult, index) => {
       <th>{quizResult.timeTaken}</th>
     </tr>
   );
-}
+};
 
 const _selectBadgeColor = (difficulty) => {
   return difficulty === "Hard"
@@ -81,4 +80,4 @@ const _selectBadgeColor = (difficulty) => {
     : "badge-secondary bg-green-800";
 };
 
-export default SampleQuizDashboard
+export default SampleQuizDashboard;

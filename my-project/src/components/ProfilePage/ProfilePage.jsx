@@ -6,7 +6,13 @@ import useUserStore from "../../context/store";
 import { changeUserAvatar, updateUserData } from "../../services/user.services";
 import { toast } from "react-toastify";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import {ref as dbRef, equalTo, get, orderByChild, query } from "firebase/database";
+import {
+  ref as dbRef,
+  equalTo,
+  get,
+  orderByChild,
+  query,
+} from "firebase/database";
 
 const ProfilePage = () => {
   const user = useUserStore((state) => state.user);
@@ -17,19 +23,23 @@ const ProfilePage = () => {
   const [newPassword, setNewPassword] = useState("");
   const [quizzes, setQuizzes] = useState([]);
 
-  useEffect(()=>{
-    if(!user){
-    return;
+  useEffect(() => {
+    if (!user) {
+      return;
     }
     console.log(user);
     const quizRef = dbRef(db, "quizzesTest");
 
-    const quizQuery = query(quizRef, orderByChild("createdBy"), equalTo(user.username));
-    get(quizQuery).then(snapshot=>{
+    const quizQuery = query(
+      quizRef,
+      orderByChild("createdBy"),
+      equalTo(user.username)
+    );
+    get(quizQuery).then((snapshot) => {
       console.log(snapshot.val());
-      setQuizzes(Object.values(snapshot.val()))
-    })
-  },[user])
+      setQuizzes(Object.values(snapshot.val()));
+    });
+  }, [user]);
   const auth = getAuth();
 
   const handlePasswordChange = async () => {

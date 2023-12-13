@@ -15,8 +15,8 @@ const DisplayQuizes = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
   const today = new Date();
-  const [search,setSearch] = useState('');
-  const [filter,setFilter] = useState('');
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -27,7 +27,9 @@ const DisplayQuizes = () => {
       getAllQuizzes().then((data) => {
         setQuizzes(
           data.filter(
-            (q) => (q.quizCategory === state.category || state.category === "All") && q.id !== "-NlO5HKmUZcAEKfcfZcZ"
+            (q) =>
+              (q.quizCategory === state.category || state.category === "All") &&
+              q.id !== "-NlO5HKmUZcAEKfcfZcZ"
           )
         );
       });
@@ -52,9 +54,9 @@ const DisplayQuizes = () => {
       state: { hasCompletedQuiz: true, category: state.category },
     });
   };
-  useEffect(()=>{
-    filterQuizzes(filter)
-  },[search])
+  useEffect(() => {
+    filterQuizzes(filter);
+  }, [search]);
 
   const filterQuizzes = (filterType) => {
     let filtered = quizzes;
@@ -63,9 +65,7 @@ const DisplayQuizes = () => {
       case "Completed Quizzes":
         console.log(completedQuizzes);
         console.log(quizzes);
-        filtered = quizzes.filter((quiz) =>
-          completedQuizzes.includes(quiz.id)
-        );
+        filtered = quizzes.filter((quiz) => completedQuizzes.includes(quiz.id));
         break;
       case "Coming Soon":
         filtered = quizzes.filter((quiz) => new Date(quiz.startDate) > today);
@@ -84,11 +84,12 @@ const DisplayQuizes = () => {
       default:
         break;
     }
-    if(search !== ''){
-      filtered = filtered.filter(quiz=>quiz.quizName.toLowerCase().includes(search.toLowerCase()))  
+    if (search !== "") {
+      filtered = filtered.filter((quiz) =>
+        quiz.quizName.toLowerCase().includes(search.toLowerCase())
+      );
     }
     setFilteredQuizzes(filtered);
-
   };
 
   const isQuizAccessible = (quiz) => {
@@ -135,14 +136,16 @@ const DisplayQuizes = () => {
           onClick={() => filterQuizzes("Finished")}
         />
         <div className="form-control">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="input input-bordered"
-                  value = {search}
-                  onChange={(e)=>{setSearch(e.target.value)}}
-                />
-              </div>
+          <input
+            type="text"
+            placeholder="Search"
+            className="input input-bordered"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2 font-bold">
@@ -155,16 +158,20 @@ const DisplayQuizes = () => {
               <h2 className="card-title">
                 {quiz.title}
                 <div
-                className={`badge ${selectBadgeColor(quiz.difficulty)}`}
-                style={{ border: "none", padding: "3%", marginBottom: 4 }}
-              >
-                {quiz.difficulty}
-              </div>
-                </h2>
+                  className={`badge ${selectBadgeColor(quiz.difficulty)}`}
+                  style={{ border: "none", padding: "3%", marginBottom: 4 }}
+                >
+                  {quiz.difficulty}
+                </div>
+              </h2>
               <p>Created by: {quiz.createdBy}</p>
               <p>Category: {quiz.quizCategory}</p>
               <p>Duration: {quiz.maxDuration} minutes</p>
-              <p>Total points: {quiz.questions.reduce((acc,cur)=>acc+cur.points,0)} points</p>
+              <p>
+                Total points:{" "}
+                {quiz.questions.reduce((acc, cur) => acc + cur.points, 0)}{" "}
+                points
+              </p>
               <p>
                 Total questions:{" "}
                 {quiz.questions ? Object.keys(quiz.questions).length : 0}
@@ -199,6 +206,5 @@ const DisplayQuizes = () => {
     </div>
   );
 };
-
 
 export default DisplayQuizes;

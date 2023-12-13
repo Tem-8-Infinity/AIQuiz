@@ -1,4 +1,4 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 // import {useAuthState} from "react-firebase-hooks";
 import { createQuiz } from "../../services/quiz.services";
 import {
@@ -20,7 +20,7 @@ const CreateQuiz = () => {
     title: "",
     maximumPoints: "",
     isPrivate: false,
-    type: "",//Open or Private
+    type: "", //Open or Private
   });
 
   const navigate = useNavigate();
@@ -45,14 +45,23 @@ const CreateQuiz = () => {
     ev.preventDefault();
     console.log("Quiz Created:", quizDetails);
     console.log(user);
-    const key = await createQuiz(
-      user.username,
-      quizDetails,
-      ); //createdBy,isPrivate,quizCategory,quizDifficulty, quizDuration, quizName
+    const key = await createQuiz(user.username, quizDetails); //createdBy,isPrivate,quizCategory,quizDifficulty, quizDuration, quizName
     navigate(`/DisplayQuestionnaire/${key}`);
   };
 
-  const categories = ["Books", "Movies", "Animals", "History", "Training", "Science", "Sport", "Education", "Anime", "Geography", "Math"];
+  const categories = [
+    "Books",
+    "Movies",
+    "Animals",
+    "History",
+    "Training",
+    "Science",
+    "Sport",
+    "Education",
+    "Anime",
+    "Geography",
+    "Math",
+  ];
   const difficulty = ["Hard", "Medium", "Easy"];
 
   useEffect(() => {
@@ -61,130 +70,134 @@ const CreateQuiz = () => {
 
   return (
     <form onSubmit={handleCreateQuiz}>
-    <div>
-      <div className="card w-full bg-base-100 shadow-xl">
-        <div className="card-body">
-          <h1>Create Quiz</h1>
-          <div>
-            <label>Category :</label>
-            <select
-              required
-              name="quizCategory"
-              value={quizDetails.quizCategory}
-              onChange={handleInputChange}
-              className="select select-bordered w-full mt-3"
+      <div>
+        <div className="card w-full bg-base-100 shadow-xl">
+          <div className="card-body">
+            <h1>Create Quiz</h1>
+            <div>
+              <label>Category :</label>
+              <select
+                required
+                name="quizCategory"
+                value={quizDetails.quizCategory}
+                onChange={handleInputChange}
+                className="select select-bordered w-full mt-3"
               >
-              <option selected  value={""}>
-                Categories
-              </option>
-              {categories.map((category, index) => (
-                <option key={category} >
-                  {category}
+                <option selected value={""}>
+                  Categories
                 </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label>Title :</label>
-            <input
-              required
-              value={quizDetails.quizName}
-              onChange={handleInputChange}
-              name="quizName"
-              type="text"
-              placeholder="Title of the quiz"
-              className="input input-bordered w-full mt-3 text-base"
-            />
-          </div>
-          <div>
-            <label>Timer :</label>
-            <input
-              required
-              value={quizDetails.maxDuration}
-              onChange={handleInputChange}
-              name="maxDuration"
-              type="number"
-              min={1}
-              placeholder="Set quiz timer"
-              className="input input-bordered w-full max-w-xs ml-10 mt-3 "
-            />
-          </div>
-          <div>
-            <label>Difficulty :</label>
-            
-            <select
-              required
-              name="difficulty"
-              value={quizDetails.difficulty}
-              onChange={handleInputChange}
-              className="select select-bordered w-full max-w-xs mt-3 ml-5"
+                {categories.map((category, index) => (
+                  <option key={category}>{category}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label>Title :</label>
+              <input
+                required
+                value={quizDetails.quizName}
+                onChange={handleInputChange}
+                name="quizName"
+                type="text"
+                placeholder="Title of the quiz"
+                className="input input-bordered w-full mt-3 text-base"
+              />
+            </div>
+            <div>
+              <label>Timer :</label>
+              <input
+                required
+                value={quizDetails.maxDuration}
+                onChange={handleInputChange}
+                name="maxDuration"
+                type="number"
+                min={1}
+                placeholder="Set quiz timer"
+                className="input input-bordered w-full max-w-xs ml-10 mt-3 "
+              />
+            </div>
+            <div>
+              <label>Difficulty :</label>
+
+              <select
+                required
+                name="difficulty"
+                value={quizDetails.difficulty}
+                onChange={handleInputChange}
+                className="select select-bordered w-full max-w-xs mt-3 ml-5"
               >
-              <option selected disabled hidden value={""}>
-                Select difficulty
-              </option>
-              {difficulty.map((d, index) => (
-                <option key={d} >
-                  {d}
+                <option selected disabled hidden value={""}>
+                  Select difficulty
                 </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label>Start Date :</label>
-            <input
-             required
-              value={quizDetails.startDate}
-              onChange={handleInputChange}
-              name="startDate"
-              type="date"
-              min={new Date(Date.now()).toISOString().split("T")[0]}
-              placeholder="Set start date"
-              className="input input-bordered w-full max-w-xs ml-3 mt-2"
-            />
-          </div>
-          <div>
-            <label>End Date :</label>
-            <input
-              required
-              value={quizDetails.endDate}
-              onChange={handleInputChange}
-              name="endDate"
-              type="date"
-              min={new Date((new Date(quizDetails.startDate).valueOf() || Date.now())+24*3600*1000).toISOString().split("T")[0]}
-              placeholder="Set end date"
-              className="input input-bordered w-full max-w-xs ml-5 mt-1"
-            />
-          </div>
-          <div>
-            <button 
-            type="button"
-              className={`btn mr-3 text-base ${
-                quizDetails.isPrivate ? "btn-outline" : "btn-primary"
-              }`}
-              onClick={() => handlePrivacyChange(false)}
-            >
-              Open
-            </button>
-            <button 
-            type="button"
-              className={`btn text-base  ${
-                quizDetails.isPrivate ? "btn-primary" : "btn-outline"
-              }`}
-              onClick={() => handlePrivacyChange(true)}
-            >
-              Private
-            </button>
-          </div>
-          <div>
-            <button className="!h-16 btn btn-primary text-lg mt-3 p-5" type="submit">
-              
-              Display Questionnaire
-              
-            </button>
+                {difficulty.map((d, index) => (
+                  <option key={d}>{d}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label>Start Date :</label>
+              <input
+                required
+                value={quizDetails.startDate}
+                onChange={handleInputChange}
+                name="startDate"
+                type="date"
+                min={new Date(Date.now()).toISOString().split("T")[0]}
+                placeholder="Set start date"
+                className="input input-bordered w-full max-w-xs ml-3 mt-2"
+              />
+            </div>
+            <div>
+              <label>End Date :</label>
+              <input
+                required
+                value={quizDetails.endDate}
+                onChange={handleInputChange}
+                name="endDate"
+                type="date"
+                min={
+                  new Date(
+                    (new Date(quizDetails.startDate).valueOf() || Date.now()) +
+                      24 * 3600 * 1000
+                  )
+                    .toISOString()
+                    .split("T")[0]
+                }
+                placeholder="Set end date"
+                className="input input-bordered w-full max-w-xs ml-5 mt-1"
+              />
+            </div>
+            <div>
+              <button
+                type="button"
+                className={`btn mr-3 text-base ${
+                  quizDetails.isPrivate ? "btn-outline" : "btn-primary"
+                }`}
+                onClick={() => handlePrivacyChange(false)}
+              >
+                Open
+              </button>
+              <button
+                type="button"
+                className={`btn text-base  ${
+                  quizDetails.isPrivate ? "btn-primary" : "btn-outline"
+                }`}
+                onClick={() => handlePrivacyChange(true)}
+              >
+                Private
+              </button>
+            </div>
+            <div>
+              <button
+                className="!h-16 btn btn-primary text-lg mt-3 p-5"
+                type="submit"
+              >
+                Display Questionnaire
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </form>
   );
 };

@@ -76,7 +76,7 @@ const NavBar = () => {
                   </svg>
                 </label>
               </div>
-            
+
               <div className="dropdown dropdown-end">
                 <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                   <div className="w-10 rounded-full">
@@ -95,9 +95,9 @@ const NavBar = () => {
                       <Link to={"/createQuiz"} className="justify-between">
                         Create Quiz
                       </Link>
-                      
+
                       <Link to={"/QuizzesList"} className="justify-between">
-                      My Quizzes
+                        My Quizzes
                       </Link>
                     </li>
                   )}
@@ -110,11 +110,10 @@ const NavBar = () => {
                       <Link to={"/createQuiz"} className="justify-between">
                         Create Quiz
                       </Link>
-                      
+
                       <Link to={"/QuizzesList"} className="justify-between">
                         Quizzes List
                       </Link>
-
                     </li>
                   )}
                   <li>

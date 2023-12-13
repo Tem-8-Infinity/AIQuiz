@@ -27,7 +27,6 @@ import QuizzesList from "./components/QuizzesList/QuizzesList";
 import EditQuestionnaire from "./components/EditQuestionnaire/EditQuestionnaire";
 import SampleQuizDashboard from "./components/SampleQuizDashboard/SampleQuizDashboard";
 
-
 function App() {
   const { user, setUser } = useUserStore();
   const auth = getAuth();
@@ -78,12 +77,7 @@ function App() {
             </AuthenticatedRoute>
           }
         />
-        <Route
-          path="/StartSampleQuiz"
-          element={
-              <StartQuiz />
-          }
-        />
+        <Route path="/StartSampleQuiz" element={<StartQuiz />} />
         <Route
           path="/QuizResults"
           element={
@@ -140,12 +134,7 @@ function App() {
             </AuthenticatedRoute>
           }
         />
-        <Route
-          path="/SampleQuizDashboard"
-          element={
-              <SampleQuizDashboard />
-          }
-        />
+        <Route path="/SampleQuizDashboard" element={<SampleQuizDashboard />} />
         <Route
           path="/DisplayQuestionnaire/:quizId"
           element={

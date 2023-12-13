@@ -52,10 +52,6 @@ AIQuiz is not just a platform; it's a comprehensive solution crafted for educato
 
 - **Scoreboard Moderation**: Admins ensure fair play by overseeing scoreboards and addressing any discrepancies.
 
-### Educator Groups - Strength in Unity
-
-- **Educator Groups**: Join forces with fellow educators. Edit or delete quizzes within your group and keep the knowledge flowing.
-
 ## Embark on Your QuizCraft Journey! 🚀
 
 AIQuiz is not just a platform; it's an adventure waiting to unfold. Whether you're here to create, challenge, or conquer, AIQuiz is your companion in the quest for knowledge and fun. Let the quizzling begin! 🎉
