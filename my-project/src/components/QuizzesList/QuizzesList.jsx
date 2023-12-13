@@ -3,20 +3,16 @@ import { db } from '../../config/firebase-config';
 import { equalTo, get, orderByChild, query, ref, remove } from 'firebase/database';
 import useUserStore from '../../context/store';
 import { useNavigate } from 'react-router-dom';
+import { selectBadgeColor } from '../../utils/selectBadgeColor';
 
-const selectBadgeColor = (difficulty) => {
-    return difficulty === "Hard"
-      ? "badge-secondary bg-red-600"
-      : difficulty === "Medium"
-      ? "badge-secondary bg-orange-600"
-      : "badge-secondary bg-green-800";
-  };
   
 const QuizzesList = () => {
     const [quizzes, setQuizzes] = useState([]);
     const user = useUserStore((state) => state.user);
     const [filter,setFilter] = useState(true); 
     const navigate = useNavigate();
+    const [search,setSearch] = useState('');
+    const [filterQuiz,setFilterQuiz] = useState([])
   useEffect(()=>{
     if(!user){
     return;
@@ -30,7 +26,12 @@ const QuizzesList = () => {
               id : key,
               ...snapshot.val()[key]
             })))
+            setFilterQuiz(Object.keys(snapshot.val()).map(key=>({
+              id : key,
+              ...snapshot.val()[key]
+            })))
           })
+
           return;
     }
     const quizQuery = query(quizRef, orderByChild("createdBy"), equalTo(user.username));
@@ -42,15 +43,34 @@ const QuizzesList = () => {
       })))
     })
 },[user])
+  useEffect(()=>{
+    if(search !== ''){
+      setFilterQuiz(quizzes.filter(q=> q.quizName.toLowerCase().includes(search.toLowerCase())))
+    }else{
+      setFilterQuiz(quizzes)
+    }
+  },[search])
   return (
     <div className='bg-border bg-gradient-to-br from-teal-400 to-teal-10 p-2 min-h-screen'>
+      <div className='flex items-center'>
         {user.admin && <button className={`btn bg-gradient-to-br from-violet-400 to-teal-200 text-black font-bold border-none mb-3 m-4`} onClick={()=>{setFilter(!filter)}}>{filter ? 'Display only My quizzes' : 'Display All Quizzes'}</button>}
-        {quizzes.length === 0 && (
+        {quizzes.length === 0 ? (
           <div className='flex flex-col justify-center  text-center'> 
           <p className=''>  You have no quizzes yet ! </p>
           </div>
+        ):(
+          <div className="form-control mt-1">
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="input input-bordered"
+                  value = {search}
+                  onChange={(e)=>{setSearch(e.target.value)}}
+                />
+              </div>
         )}
-        {(filter ? quizzes.filter(quiz=>quiz.createdBy === user.username): quizzes).map((quiz, index) => (
+        </div>
+        {(filter ? filterQuiz.filter(quiz=>quiz.createdBy === user.username): filterQuiz).map((quiz, index) => (
         <div key={index} className="card bg-border shadow-md rounded bg-gradient-to-br from-teal-400 to-teal-100 text-black font-bold">
           <div className='flex flex-wrap m-5 '>
           <button className="btn bg-gradient-to-br from-violet-400 to-teal-200 text-black font-bold border-none " onClick={()=>{

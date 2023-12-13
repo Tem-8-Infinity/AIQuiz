@@ -15,12 +15,12 @@ const Home = () => {
             enthusiasts, and experts. From science and technology to literature
             and entertainment, there's a quiz for everyone.
           </p>
-          <button
-            onClick={() => (window.location.href = "/SignUp")}
+          <a
+            href="/SampleQuizDashboard"
             className="btn btn-primary font-bold"
           >
-            Get Started
-          </button>
+            Try out the Sample Quiz 
+          </a>
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getAllQuizzes } from "../../services/quiz.services";
 import { getCompletedQuizzes } from "../../services/user.services";
 import { toast } from "react-toastify";
+import { selectBadgeColor } from "../../utils/selectBadgeColor";
 
 const DisplayQuizes = () => {
   const { state } = useLocation();
@@ -14,6 +15,8 @@ const DisplayQuizes = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
   const today = new Date();
+  const [search,setSearch] = useState('');
+  const [filter,setFilter] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -24,7 +27,7 @@ const DisplayQuizes = () => {
       getAllQuizzes().then((data) => {
         setQuizzes(
           data.filter(
-            (q) => q.quizCategory === state.category || state.category === "All"
+            (q) => (q.quizCategory === state.category || state.category === "All") && q.id !== "-NlO5HKmUZcAEKfcfZcZ"
           )
         );
       });
@@ -33,6 +36,7 @@ const DisplayQuizes = () => {
 
   useEffect(() => {
     filterQuizzes("Ongoing");
+    setFilter("Ongoing");
   }, [quizzes]);
 
   const startQuiz = (quiz) => {
@@ -48,13 +52,19 @@ const DisplayQuizes = () => {
       state: { hasCompletedQuiz: true, category: state.category },
     });
   };
+  useEffect(()=>{
+    filterQuizzes(filter)
+  },[search])
 
   const filterQuizzes = (filterType) => {
     let filtered = quizzes;
+    setFilter(filterType);
     switch (filterType) {
       case "Completed Quizzes":
+        console.log(completedQuizzes);
+        console.log(quizzes);
         filtered = quizzes.filter((quiz) =>
-          completedQuizzes.includes(Number(quiz.id))
+          completedQuizzes.includes(quiz.id)
         );
         break;
       case "Coming Soon":
@@ -65,7 +75,7 @@ const DisplayQuizes = () => {
           (quiz) =>
             new Date(quiz.startDate) <= today &&
             new Date(quiz.endDate) >= today &&
-            !completedQuizzes.includes(Number(quiz.id))
+            !completedQuizzes.includes(quiz.id)
         );
         break;
       case "Finished":
@@ -74,19 +84,23 @@ const DisplayQuizes = () => {
       default:
         break;
     }
+    if(search !== ''){
+      filtered = filtered.filter(quiz=>quiz.quizName.toLowerCase().includes(search.toLowerCase()))  
+    }
     setFilteredQuizzes(filtered);
+
   };
 
   const isQuizAccessible = (quiz) => {
     return (
-      !completedQuizzes.includes(Number(quiz.id)) &&
+      !completedQuizzes.includes(quiz.id) &&
       new Date(quiz.startDate) <= today &&
       new Date(quiz.endDate) >= today
     );
   };
 
   const hasCompletedQuiz = (quiz) => {
-    return completedQuizzes.includes(Number(quiz.id));
+    return completedQuizzes.includes(quiz.id);
   };
 
   return (
@@ -120,6 +134,15 @@ const DisplayQuizes = () => {
           aria-label="Finished"
           onClick={() => filterQuizzes("Finished")}
         />
+        <div className="form-control">
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="input input-bordered"
+                  value = {search}
+                  onChange={(e)=>{setSearch(e.target.value)}}
+                />
+              </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2 font-bold">
@@ -129,11 +152,19 @@ const DisplayQuizes = () => {
             className="card bg-border shadow-md rounded bg-gradient-to-br from-teal-400 to-teal-100 text-black font-bold"
           >
             <div className="card-body text-black">
-              <h2 className="card-title">{quiz.quizName}</h2>
+              <h2 className="card-title">
+                {quiz.quizName}
+                <div
+                className={`badge ${selectBadgeColor(quiz.difficulty)}`}
+                style={{ border: "none", padding: "3%", marginBottom: 4 }}
+              >
+                {quiz.difficulty}
+              </div>
+                </h2>
               <p>Created by: {quiz.createdBy}</p>
               <p>Category: {quiz.quizCategory}</p>
               <p>Duration: {quiz.maxDuration} minutes</p>
-              <p>Total points: {quiz.maximumPoints} points</p>
+              <p>Total points: {quiz.questions.reduce((acc,cur)=>acc+cur.points,0)} points</p>
               <p>
                 Total questions:{" "}
                 {quiz.questions ? Object.keys(quiz.questions).length : 0}
@@ -168,5 +199,6 @@ const DisplayQuizes = () => {
     </div>
   );
 };
+
 
 export default DisplayQuizes;
