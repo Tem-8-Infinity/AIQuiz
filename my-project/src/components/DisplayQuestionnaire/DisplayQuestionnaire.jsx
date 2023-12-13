@@ -52,6 +52,9 @@ const DisplayQuestionnaire = () => {
     <button className="btn btn-primary ml-5" onClick={()=>{
       navigate(`/CreateQuestionnaire/${quizId}`)
     }}>Create Questionnaire</button>
+    <button className="btn btn-primary ml-5" onClick={()=>{
+      navigate(`/QuizzesList`)
+    }}>Finish</button>
     </>
   );
 };
