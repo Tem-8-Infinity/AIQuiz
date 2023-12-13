@@ -15,7 +15,6 @@ const PrivateHome = () => {
     "Movies",
     "Math",
     "Animals",
-    "TV Shows",
     "Anime",
     "Geography",
   ];
