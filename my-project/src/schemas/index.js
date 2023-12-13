@@ -19,7 +19,7 @@ export const basicSchema = yup.object().shape({
 // })
 
 export const quizSchema = yup.object().shape({
-    question: yup.string().required("Question is required").max(50, "The question title must be no more than 50 symbols"),
+    question: yup.string().required("Question is required").max(70, "The question title must be no more than 50 symbols"),
     correctAnswer: yup.string().required("Correct answer is required").matches(/^[A-Z]/, "The answer must start with a capital letter."),
     incorrectAnswers: yup.array().of(
         yup.string().required("Incorrect answer is required").matches(/^[A-Z]/, "The answer must start with a capital letter.")

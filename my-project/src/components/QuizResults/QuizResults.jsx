@@ -41,7 +41,7 @@ const QuizResults = () => {
             Your Answer: {userAnswers[index]}
             {userAnswers[index] !== question.correctAnswer && (
               <span
-                className="ml-2 text-black hover:text-black cursor-pointer font-bold text-cyan-700"
+                className="ml-2 hover:text-black cursor-pointer font-bold text-cyan-700"
                 title={question.correctAnswer}
               >
                 Hover to see the correct answer

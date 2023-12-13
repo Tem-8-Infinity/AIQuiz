@@ -17,7 +17,7 @@ const CategoryCard = ({ category }) => {
       <h1 className="font-bold text-4xl">{category}</h1>
       <img
         src={categoryIconsEnum[category]}
-        className="w-[40px] bg-white rounded-full "
+        className="w-[80px] bg-white rounded-box "
       ></img>
     </div>
   );
