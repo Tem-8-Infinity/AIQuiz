@@ -15,11 +15,8 @@ const Home = () => {
             enthusiasts, and experts. From science and technology to literature
             and entertainment, there's a quiz for everyone.
           </p>
-          <a
-            href="/SampleQuizDashboard"
-            className="btn btn-primary font-bold"
-          >
-            Try out the Sample Quiz 
+          <a href="/SampleQuizDashboard" className="btn btn-primary font-bold">
+            Try out the Sample Quiz
           </a>
         </div>
       </div>

@@ -37,22 +37,22 @@ export const getUserByHandle = async (handle) => {
   }
 };
 
-{/*An example of how to update role in firebase*/}
+{/*An example of how to update role in firebase*/ }
 
 //export const getUserRoleLive = (uid, listener) => {
-  //try {
-    // const updatedRole = 
-    // return onValue(get(ref(db, `users/${uid}/role`), snapshot => {
-    //   if (!snapshot.exists()) {
-    //     return listener([])
-    //   } 
-    //   const role = snapshot.val();
-    //   console.log(role)
-    //   return listener(role)
-    // }))
-    //return updatedRole();
-  // } catch (error) {
-  //   toast.error("Error getting role");
+//try {
+// const updatedRole = 
+// return onValue(get(ref(db, `users/${uid}/role`), snapshot => {
+//   if (!snapshot.exists()) {
+//     return listener([])
+//   } 
+//   const role = snapshot.val();
+//   console.log(role)
+//   return listener(role)
+// }))
+//return updatedRole();
+// } catch (error) {
+//   toast.error("Error getting role");
 //}
 //};
 

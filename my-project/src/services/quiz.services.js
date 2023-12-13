@@ -85,7 +85,7 @@ export const storeDataInResult = async (quizId, score) => {
       results = [];
     }
 
-    if(quizId === "-NlO5HKmUZcAEKfcfZcZ"){
+    if (quizId === "-NlO5HKmUZcAEKfcfZcZ") {
       console.log(score);
       results.push(score)
       await set(resultsRef, results)

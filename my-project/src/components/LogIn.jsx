@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useFormik } from 'formik';
+import React, { useState } from "react";
+import { useFormik } from "formik";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase-config";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../context/store";
 import { toast } from "react-toastify";
 import { isUserBlocked } from "../services/user.services";
-import { loginSchema } from '../schemas';
+import { loginSchema } from "../schemas";
 
 const LogIn = () => {
   const [loginError, setLoginError] = useState("");
@@ -15,8 +15,8 @@ const LogIn = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
@@ -55,7 +55,7 @@ const LogIn = () => {
                 name="email"
                 placeholder="email"
                 className="input input-bordered"
-                {...formik.getFieldProps('email')}
+                {...formik.getFieldProps("email")}
               />
               {formik.touched.email && formik.errors.email && (
                 <p className="text-red-500">{formik.errors.email}</p>
@@ -70,7 +70,7 @@ const LogIn = () => {
                 name="password"
                 placeholder="password"
                 className="input input-bordered"
-                {...formik.getFieldProps('password')}
+                {...formik.getFieldProps("password")}
               />
               {formik.touched.password && formik.errors.password && (
                 <p className="text-red-500">{formik.errors.password}</p>
