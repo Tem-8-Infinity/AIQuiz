@@ -153,7 +153,7 @@ const DisplayQuizes = () => {
           >
             <div className="card-body text-black">
               <h2 className="card-title">
-                {quiz.quizName}
+                {quiz.title}
                 <div
                 className={`badge ${selectBadgeColor(quiz.difficulty)}`}
                 style={{ border: "none", padding: "3%", marginBottom: 4 }}
