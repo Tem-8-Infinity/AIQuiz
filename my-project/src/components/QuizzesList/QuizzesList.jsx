@@ -123,7 +123,7 @@ const QuizzesList = () => {
             </h2>
             <p>Created by: {quiz.createdBy}</p>
             <p>Category: {quiz.quizCategory}</p>
-            <p>Duration: {quiz.maxDuration}</p>
+            <p>Duration: {quiz.maxDuration} minutes</p>
             <p>End Date: {new Date(quiz.endDate).toLocaleDateString()}</p>
           </div>
         </div>

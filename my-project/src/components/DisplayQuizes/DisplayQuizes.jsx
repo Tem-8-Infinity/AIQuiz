@@ -84,12 +84,11 @@ const DisplayQuizes = () => {
     }
     if (search !== "") {
       filtered = filtered.filter((quiz) =>
-        quiz.quizName.toLowerCase().includes(search.toLowerCase())
+        (quiz.quizName || "").toLowerCase().includes(search.toLowerCase())
       );
     }
     setFilteredQuizzes(filtered);
   };
-
   const isQuizAccessible = (quiz) => {
     return (
       !completedQuizzes.includes(quiz.id) &&
