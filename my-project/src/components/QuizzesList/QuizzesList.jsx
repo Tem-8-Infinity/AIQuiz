@@ -24,7 +24,7 @@ const QuizzesList = () => {
       return;
     }
     const quizRef = ref(db, "quizzes");
-    if (user.role === "admin" || user.role === "creator") {
+    if (user.role === "admin" || user.role === "educator") {
       get(quizRef).then((snapshot) => {
         setQuizzes(
           Object.keys(snapshot.val()).map((key) => ({
@@ -45,7 +45,7 @@ const QuizzesList = () => {
     if (search !== "") {
       setFilterQuiz(
         quizzes.filter((q) =>
-          q.quizName.toLowerCase().includes(search.toLowerCase())
+          (q.quizName || "").toLowerCase().includes(search.toLowerCase())
         )
       );
     } else {
