@@ -45,7 +45,7 @@ const QuizzesList = () => {
     if (search !== "") {
       setFilterQuiz(
         quizzes.filter((q) =>
-          (q.quizName || "").toLowerCase().includes(search.toLowerCase())
+          q.quizName.toLowerCase().includes(search.toLowerCase())
         )
       );
     } else {
